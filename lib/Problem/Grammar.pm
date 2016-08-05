@@ -14,7 +14,7 @@ class Problem::Grammar::Actions {
     make Silhouette.new( polygons => $<polygon>>>.made );
   }
   method polygon($/) {
-    make Polygon.new( verticies => $<vertex>>>.made );
+    make Polygon.new( vertices => $<vertex>>>.made );
   }
   method vertex($/) {
     make Vertex.new( x => $<location>[0].made, y => $<location>[1].made );
