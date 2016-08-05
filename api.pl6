@@ -1,7 +1,10 @@
 #!/usr/bin/env perl6
 
+use lib 'lib';
 use JSON::Tiny;
 use LREP;
+use Problem;
+
 
 sub api-call($path, :$use-cache = True, :$decode-json = True) {
   my $filename = "data/{$path.subst(/\//, '_', :g)}";
@@ -38,6 +41,14 @@ my @problems;
 for @problem_hashes -> $problem_hash {
   push @problems, get-hash($problem_hash<problem_spec_hash>, :!decode-json);
 }
+
+sub parse-problem($problem) {
+  my $a = Problem::Grammar::Actions.new;
+  my $m = Problem::Grammar.parse($problem, actions => $a);
+  $m.made;
+}
+
+my $p = parse-problem(@problems[0]);
 
 LREP::here;
 
