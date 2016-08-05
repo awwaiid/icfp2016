@@ -5,7 +5,6 @@ use JSON::Tiny;
 use LREP;
 use Problem;
 
-
 sub api-call($path, :$use-cache = True, :$decode-json = True) {
   my $filename = "data/{$path.subst(/\//, '_', :g)}";
   my $raw-result;
@@ -48,7 +47,16 @@ sub parse-problem($problem) {
   $m.made;
 }
 
-my $p = parse-problem(@problems[0]);
+my $p = parse-problem(@problems[30]);
+
+use Inline::Perl5;
+use Imager:from<Perl5>;
+
+my $image = Imager.new(xsize => 1000, ysize => 1000);
+$image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+$p.silhouette.draw($image);
+$image.flip(dir => 'v');
+$image.write(file => 'out.png');
 
 LREP::here;
 

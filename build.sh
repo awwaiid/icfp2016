@@ -11,4 +11,8 @@ if [[ ! -e ~/.rakudobrew ]] ; then
   panda install LREP
 fi
 
+if [[ ! $(perl -V | grep shrplib) ]] ; then
+  perlbrew install perl-stable -Duseshrplib
+  panda install Inline::Perl5
+fi
 
