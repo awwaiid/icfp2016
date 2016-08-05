@@ -20,11 +20,35 @@ class Polygon {
   #             Append a new polygon and new crossback point to the output lists and make it current.
   #         Add the intersection point to the now current polygon.
 
+  sub determinant($x1,$y1,$x2,$y2) {
+    $x1*$y2 - $x2*$y1;
+  }
+
+	sub segment_line_intersection(@p1, @p2, @p3, @p4) {
+    say "Looking for segment {@p1} -> {@p2} intersecting {@p3} -- {@p4}";
+		my @p5;
+		my $n1 = determinant((@p3[0]-@p1[0]),(@p3[0]-@p4[0]),(@p3[1]-@p1[1]),(@p3[1]-@p4[1]));
+		my $d  = determinant((@p2[0]-@p1[0]),(@p3[0]-@p4[0]),(@p2[1]-@p1[1]),(@p3[1]-@p4[1]));
+    my $delta = 10 ** -7;
+		if (abs($d) < $delta) {
+      say "Parallel!";
+			return; # parallel
+		}
+		if (!(($n1/$d < 1) && ($n1/$d > 0))) {
+      say "Nope!";
+			return; # not overlapping
+		}
+		@p5[0] = @p1[0] + $n1/$d * (@p2[0] - @p1[0]);
+		@p5[1] = @p1[1] + $n1/$d * (@p2[1] - @p1[1]);
+    say "Yep: {@p5}";
+		return @p5; # intersection point
+	}
+
   method edges {
     # Slice these out into redundant pairs, looping back to the first
     # <a b c d e> ends up being a,b b,c c,d d,e e,a
     # This is what we want for the edges of our polygon
-    (@.vertices, @.vertices.first).flat.rotor(2, -1);
+    (@.vertices, @.vertices.first).flat.rotor(2 => -1).list;
   }
 
   method split-on($p1, $p2) {
@@ -33,8 +57,10 @@ class Polygon {
     my @output;
     my @crossbacks;
 
-    for self.edges -> $v1, $v2 {
+    for self.edges -> ($v1, $v2) {
       # See if $p1->$p2 intercepts $v1, $v2
+      say segment_line_intersection( $v1.to-pair, $v2.to-pair, $p1, $p2 );
+      # LREP::here;
     }
   }
 
