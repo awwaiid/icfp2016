@@ -20,14 +20,20 @@ class Polygon {
   #             Append a new polygon and new crossback point to the output lists and make it current.
   #         Add the intersection point to the now current polygon.
 
+  method edges {
+    # Slice these out into redundant pairs, looping back to the first
+    # <a b c d e> ends up being a,b b,c c,d d,e e,a
+    # This is what we want for the edges of our polygon
+    (@.vertices, @.vertices.first).flat.rotor(2, -1);
+  }
+
   method split-on($p1, $p2) {
     # split into multiple polygons
     # Maybe return two lists, one from the left and one from the right?
     my @output;
     my @crossbacks;
 
-    my @edges = (@.vertices, @.vertices.first).flat.rotor(2, -1);
-    for @edges -> $v1, $v2 {
+    for self.edges -> $v1, $v2 {
       # See if $p1->$p2 intercepts $v1, $v2
     }
   }
