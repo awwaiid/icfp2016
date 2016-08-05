@@ -6,7 +6,16 @@ use LREP;
 use Inline::Perl5;
 use Imager:from<Perl5>;
 use Data::Dump::Tree;
+
+use Vertex;
+use Polygon;
+use Segment;
+use Skeleton;
+use Silhouette;
 use Problem;
+use Problem::Grammar;
+use Solution;
+use Oragami;
 
 sub api-call($path, :$use-cache = True, :$decode-json = True) {
   my $filename = "data/{$path.subst(/\//, '_', :g)}";
