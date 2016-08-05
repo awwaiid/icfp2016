@@ -65,5 +65,9 @@ for @problems.kv -> $index, $problem {
     $image.write(file => "images/problem_$index.png");
 }
 
+# my $g = Oragami.new;
+# $g.fold( [0,1], [1,0] );
+# say $g.score_for($p);
+
 LREP::here;
 
