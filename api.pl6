@@ -1,26 +1,11 @@
 #!/usr/bin/env perl6
 
 use lib 'lib';
-use JSON::Tiny;
-use LREP;
-use Inline::Perl5;
-use Imager:from<Perl5>;
-use Data::Dump::Tree;
-
 use ICFP;
 
-use Vertex;
-use Polygon;
-use Segment;
-use Skeleton;
-use Silhouette;
-use Problem;
-use Problem::Grammar;
-use Solution;
-use Oragami;
-
 # Get the current status, don't use cache
-my $status-list = api-call('snapshot/list', :!use-cache);
+# my $status-list = api-call('snapshot/list', :!use-cache);
+my $status-list = api-call('snapshot/list', :use-cache);
 
 # The lastmost one is the one we want
 my $status-hash = $status-list<snapshots>[*-1]<snapshot_hash>;
