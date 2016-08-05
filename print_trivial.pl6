@@ -3,4 +3,5 @@
 use lib 'lib';
 use Oragami;
 
-say Oragami::trivial_solution();
+say Oragami.new.trivial_solution;
+
