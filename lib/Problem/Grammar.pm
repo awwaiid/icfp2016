@@ -6,8 +6,40 @@ use Skeleton;
 use Silhouette;
 use Problem;
 
+class Problem::Grammar::Actions {
+  method TOP($/) {
+    make Problem.new( silhouette => $<silhouette>.made, skeleton => $<skeleton>.made );
+  }
+  method silhouette($/) {
+    make Silhouette.new( polygons => $<polygon>>>.made );
+  }
+  method polygon($/) {
+    make Polygon.new( verticies => $<vertex>>>.made );
+  }
+  method vertex($/) {
+    make Vertex.new( x => $<location>[0].made, y => $<location>[1].made );
+  }
+  method location($/) {
+    make (~$/).Rat;
+  }
+  method skeleton($/) {
+    make Skeleton.new( segments => $<segment>>>.made );
+  }
+  method segment($/) {
+    make Segment.new( from-vertex => $<vertex>[0].made, to-vertex => $<vertex>[1].made );
+  }
+}
+
 # use Grammar::Tracer;
 grammar Problem::Grammar {
+
+  method parse-problem($problem) {
+    my $a = Problem::Grammar::Actions.new;
+    my $m = Problem::Grammar.parse($problem, actions => $a);
+    # say dump $problem unless $m;
+    die "WHAAA" unless $m;
+    $m.made;
+  }
 
   rule TOP {
     <silhouette>
@@ -38,26 +70,3 @@ grammar Problem::Grammar {
   rule segment { <vertex> <vertex> }
 }
 
-class Problem::Grammar::Actions {
-  method TOP($/) {
-    make Problem.new( silhouette => $<silhouette>.made, skeleton => $<skeleton>.made );
-  }
-  method silhouette($/) {
-    make Silhouette.new( polygons => $<polygon>>>.made );
-  }
-  method polygon($/) {
-    make Polygon.new( verticies => $<vertex>>>.made );
-  }
-  method vertex($/) {
-    make Vertex.new( x => $<location>[0].made, y => $<location>[1].made );
-  }
-  method location($/) {
-    make (~$/).Rat;
-  }
-  method skeleton($/) {
-    make Skeleton.new( segments => $<segment>>>.made );
-  }
-  method segment($/) {
-    make Segment.new( from-vertex => $<vertex>[0].made, to-vertex => $<vertex>[1].made );
-  }
-}
