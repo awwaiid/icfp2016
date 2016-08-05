@@ -3,6 +3,8 @@
 use lib 'lib';
 use JSON::Tiny;
 use LREP;
+use Inline::Perl5;
+use Imager:from<Perl5>;
 use Problem;
 
 sub api-call($path, :$use-cache = True, :$decode-json = True) {
@@ -49,12 +51,10 @@ sub parse-problem($problem) {
 
 my $p = parse-problem(@problems[30]);
 
-use Inline::Perl5;
-use Imager:from<Perl5>;
 
 my $image = Imager.new(xsize => 1000, ysize => 1000);
 $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
-$p.silhouette.draw($image);
+$p.draw($image);
 $image.flip(dir => 'v');
 $image.write(file => 'out.png');
 

@@ -35,6 +35,12 @@ class Segment {
 
 class Skeleton {
   has @.segments;
+
+  method draw($image) {
+    for @.segments.list -> $segment {
+      $segment.draw($image);
+    }
+  }
 }
 
 class Silhouette {
@@ -51,6 +57,11 @@ class Silhouette {
 class Problem {
   has $.silhouette;
   has $.skeleton;
+
+  method draw($image) {
+    $.silhouette.draw($image);
+    $.skeleton.draw($image);
+  }
 }
 
 # use Grammar::Tracer;
