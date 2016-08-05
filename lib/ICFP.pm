@@ -1,4 +1,6 @@
 
+use JSON::Tiny;
+
 sub api-call($path, :$use-cache = True, :$decode-json = True) is export {
   my $filename = "data/{$path.subst(/\//, '_', :g)}";
   my $raw-result;

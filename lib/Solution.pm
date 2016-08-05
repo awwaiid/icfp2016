@@ -5,10 +5,10 @@ class Solution {
   has @.dest-positions;
 }
 
-class Facet {
-  has $.polygon;
-  has @.transforms; # [a,c], [a,c], ...
-}
+# class Facet {
+#   has $.polygon;
+#   has @.transforms; # [a,c], [a,c], ...
+# }
 
 grammar Solution::Grammar {
   rule TOP {
