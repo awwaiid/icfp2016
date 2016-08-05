@@ -5,6 +5,7 @@ use JSON::Tiny;
 use LREP;
 use Inline::Perl5;
 use Imager:from<Perl5>;
+use Data::Dump::Tree;
 use Problem;
 
 sub api-call($path, :$use-cache = True, :$decode-json = True) {
@@ -48,20 +49,21 @@ for @problem_hashes -> $problem_hash {
 sub parse-problem($problem) {
   my $a = Problem::Grammar::Actions.new;
   my $m = Problem::Grammar.parse($problem, actions => $a);
+  say dump $problem unless $m;
   die "WHAAA" unless $m;
   $m.made;
 }
 
-my $p = parse-problem(@problems[30]);
 
+for @problems.kv -> $index, $problem {
+    my $p = parse-problem( $problem );
 
-my $image = Imager.new(xsize => 1000, ysize => 1000);
-$image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
-
-$p.draw($image);
-
-$image.flip(dir => 'v');
-$image.write(file => 'out.png');
+    my $image = Imager.new(xsize => 1000, ysize => 1000);
+    $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+    $p.draw($image);
+    $image.flip(dir => 'v');
+    $image.write(file => "images/problem_$index.png");
+}
 
 LREP::here;
 

@@ -1,5 +1,7 @@
 #!perl6
 
+# use Grammar::Tracer;
+
 class Vertex {
   has $.x;
   has $.y;
@@ -112,7 +114,7 @@ grammar Problem::Grammar {
 
   rule vertex { <location> "," <location> }
 
-  rule location { \d+ [ "/" \d+ ]? }
+  rule location { "-"?\d+ [ "/" \d+ ]? }
 
   rule skeleton {
     $<segment-count>=\d+
