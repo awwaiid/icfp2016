@@ -43,9 +43,12 @@ for @problem_hashes -> $problem_hash {
   push @problems, get-hash($problem_hash<problem_spec_hash>, :!decode-json);
 }
 
+
+
 sub parse-problem($problem) {
   my $a = Problem::Grammar::Actions.new;
   my $m = Problem::Grammar.parse($problem, actions => $a);
+  die "WHAAA" unless $m;
   $m.made;
 }
 
@@ -54,7 +57,9 @@ my $p = parse-problem(@problems[30]);
 
 my $image = Imager.new(xsize => 1000, ysize => 1000);
 $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+
 $p.draw($image);
+
 $image.flip(dir => 'v');
 $image.write(file => 'out.png');
 

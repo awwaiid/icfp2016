@@ -23,6 +23,7 @@ else
   panda install Task::Star
   panda install LREP
   panda install Inline::Perl5
+  panda install Data::Dump::Tree
 fi
 
 
