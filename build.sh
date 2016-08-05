@@ -8,6 +8,7 @@ if [[ ! -e ~/.rakudobrew ]] ; then
   rakudobrew build moar 2016.07.1
   rakudobrew build panda
   panda install Task::Star
+  panda install LREP
 fi
 
 
