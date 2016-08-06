@@ -72,6 +72,21 @@ multi MAIN("send-all-trivial") {
   }
 }
 
+multi MAIN("send-semi-trivial") {
+  my $count = 1;
+  for @problem_hashes.sort(*<problem_id> <=> *<problem_id>) -> $problem_hash {
+    $count++;
+    my $id = $problem_hash<problem_id>;
+    my $solution = shifted-solution( $problem_hash<spec> );
+    say "Sending $id";
+    send-solution($id, $solution);
+    if ( $count == 1000 ) {
+        say "Sent 1000. Quitting.\n";
+        last;
+    }
+  }
+}
+
 multi MAIN("oragami") {
   my $g = Oragami.new;
   my $p = $g.facets[0].polygon;
