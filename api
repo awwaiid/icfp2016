@@ -19,7 +19,7 @@ my @problem_hashes = $game-state<problems>.list;
 my @problems;
 my %problem_by_id;
 
-say "loading problems";
+say "Loading problems";
 for @problem_hashes.sort(*<problem_id> <=> *<problem_id>) -> $problem_hash {
   my $problem-spec = get-blob($problem_hash<problem_spec_hash>, :!decode-json);
   %problem_by_id{$problem_hash<problem_id>} = $problem_hash;
@@ -87,10 +87,10 @@ multi MAIN("all-images") {
 multi MAIN("oragami") {
   my $g = Oragami.new;
   my $p = $g.facets[0].polygon;
-  $p.split-on( (0, 1/2), (1, 1/2) );
+  $p.split-on( (0, <1/2>), (1, <1/2>) );
 
   $g.fold( [0,1], [1,0] );
-  say $g.score_for($p);
+  # say $g.score_for($p);
 }
 
 
