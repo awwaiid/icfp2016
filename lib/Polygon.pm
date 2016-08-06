@@ -1,22 +1,23 @@
+
 use Vertex;
 
 class Polygon {
   has @.vertices;
 
   multi method add-vertex(Vertex $v) {
-    @.verticies.push($v);
+    @.vertices.push($v);
   }
 
   multi method add-vertex($x, $y) {
     my $v = Vertex.new(:$x, :$y);
-    @.verticies.push($v);
+    @.vertices.push($v);
   }
 
   sub determinant($x1,$y1,$x2,$y2) {
     $x1*$y2 - $x2*$y1;
   }
 
-	sub segment_line_intersection(@p1, @p2, @p3, @p4) {
+	sub segment-line-intersection(@p1, @p2, @p3, @p4) {
     say "Looking for segment {@p1} -> {@p2} intersecting {@p3} -- {@p4}";
 		my @p5;
 		my $n1 = determinant((@p3[0]-@p1[0]),(@p3[0]-@p4[0]),(@p3[1]-@p1[1]),(@p3[1]-@p4[1]));
@@ -24,11 +25,11 @@ class Polygon {
     my $delta = 10 ** -7;
 		if (abs($d) < $delta) {
       say "Parallel!";
-			return; # parallel
+			return False; # parallel
 		}
 		if (!(($n1/$d < 1) && ($n1/$d > 0))) {
       say "Nope!";
-			return; # not overlapping
+			return False; # not overlapping
 		}
 		@p5[0] = @p1[0] + $n1/$d * (@p2[0] - @p1[0]);
 		@p5[1] = @p1[1] + $n1/$d * (@p2[1] - @p1[1]);
@@ -71,49 +72,63 @@ class Polygon {
     my @intersections;
     for self.edges -> ($v1, $v2) {
       # See if $p1->$p2 intercepts $v1, $v2
-      my @intersection = segment_line_intersection( $v1.to-pair, $v2.to-pair, $p1, $p2 );
-      if @intersection {
-        @intersections.push(@intersection);
+      my $intersection = segment-line-intersection( $v1.to-pair, $v2.to-pair, $p1, $p2 );
+      if $intersection {
+        @intersections.push($intersection);
       }
     }
 
+    say "Intersections: {@intersections.perl}";
     @intersections .= sort({ $^a[0] <=> $^b[0] || $^a[1] <=> $^b[1]});
 
     my %pairs;
-    for @intersections -> ($a, $b) {
+    for @intersections.rotor(2) -> ($a, $b) {
       %pairs{$a.perl} = $b;
       %pairs{$b.perl} = $a;
     }
 
     my @polygon-stack;
-    my $current_polygon = Polygon.new;
+    my @all-polygons;
+    my $current-polygon = Polygon.new;
+    @all-polygons.push($current-polygon);
     for self.edges -> ($v1, $v2) {
-      $current_polygon.add_vertex($v1);
+      say "Working edge $v1 -> $v2";
+      $current-polygon.add-vertex($v1);
       # See if $p1->$p2 intercepts $v1, $v2
-      my @intersection = segment_line_intersection( $v1.to-pair, $v2.to-pair, $p1, $p2 );
-      if @intersection {
-        my @pair_vertex = %pairs{@intersection.perl};
-        if @pair_vertex {
+      my $intersection = segment-line-intersection( $v1.to-pair, $v2.to-pair, $p1, $p2 );
+      if $intersection {
+        my $pair-vertex = %pairs{$intersection.perl};
+        if $pair-vertex {
           # We haven't started this one yet
-          $current_polygon.add_vertex(flat @intersection);
-          $current_polygon.add_vertex(flat @pair_vertex);
-          push @polygon-stack, $current_polygon;
-          $current_polygon = Polygon.new;
-          $current_polygon.add_vertex(flat @intersection);
-          $current_polygon.add_vertex(flat @pair_vertex);
+          $current-polygon.add-vertex(|$intersection);
+          $current-polygon.add-vertex(|$pair-vertex);
+          push @polygon-stack, $current-polygon;
+          $current-polygon = Polygon.new;
+          @all-polygons.push($current-polygon);
+          $current-polygon.add-vertex(|$intersection);
+          $current-polygon.add-vertex(|$pair-vertex);
         } else {
           # Now we're on the other side. Pop goes the weasle!
-          $current_polygon = @polygon-stack.pop;
+          $current-polygon = @polygon-stack.pop;
         }
       }
     }
+
+    my $image = ::('Imager').new(xsize => 1000, ysize => 1000);
+    $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+    for @all-polygons -> $polygon {
+      $polygon.draw($image, 0, 0);
+    }
+    $image.write(file => "out.png");
+
+    LREP::here;
 
   }
 
   method draw($image, $xmin, $ymin) {
     my $color = [(^256).pick, (^256).pick, (^256).pick];
     my $unoffset = @.vertices.map(*.to-pair).list;
-    my $points = $unoffset.map(-> ($x, $y) { [ ($x - $xmin) * 500, ($y - $ymin) * 500 ] } ).list;
+    my $points = $unoffset.map(-> ($x, $y) { [ ($x - $xmin) * 1000, ($y - $ymin) * 1000 ] } ).list;
     $image.polygon(:$points, :$color);
   }
 
