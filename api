@@ -3,15 +3,15 @@
 use lib 'lib';
 use ICFP;
 
-# say "Started!";
+say "Started!";
 
 # Get the current status, don't use cache
-# my $status-list = api-call('snapshot/list', :!use-cache);
-my $status-list = api-call('snapshot/list', :use-cache);
+my $use-cache = !%*ENV<NOCACHE>.Bool;
+my $status-list = api-call('snapshot/list', use-cache => $use-cache);
 
 # The lastmost one is the one we want
 my $status-hash = $status-list<snapshots>[*-1]<snapshot_hash>;
-# say "Loading contest state";
+say "Loading contest state $status-hash";
 my $game-state = get-blob($status-hash);
 
 # Get the list of problems
@@ -19,8 +19,8 @@ my @problem_hashes = $game-state<problems>.list;
 my @problems;
 my %problem_by_id;
 
-# say "loading problems";
-for @problem_hashes.sort(*<problem_id>) -> $problem_hash {
+say "loading problems";
+for @problem_hashes.sort(*<problem_id> <=> *<problem_id>) -> $problem_hash {
   my $problem-spec = get-blob($problem_hash<problem_spec_hash>, :!decode-json);
   %problem_by_id{$problem_hash<problem_id>} = $problem_hash;
   %problem_by_id{$problem_hash<problem_id>}<spec> = $problem-spec;
@@ -29,7 +29,7 @@ for @problem_hashes.sort(*<problem_id>) -> $problem_hash {
 
 multi MAIN("ls") {
   say "ID\tsize\tssize\thash";
-  for @problem_hashes -> $problem_hash {
+  for @problem_hashes.sort(*<problem_id> <=> *<problem_id>) -> $problem_hash {
     say $problem_hash<problem_id problem_size solution_size problem_spec_hash>.join("\t");
   }
 }
@@ -38,7 +38,7 @@ multi MAIN("get-spec", $id) {
   say %problem_by_id{$id}<spec>;
 }
 
-multi MAIN("hello") {
+multi MAIN("repl") {
   my $p = Problem::Grammar.parse-problem(@problems[0]);
   LREP::here;
 }
@@ -47,7 +47,7 @@ multi MAIN("help") {
   say "hmm...";
 }
 
-multi MAIN("upload-trivial") {
+multi MAIN("send-all-trivial") {
   my $boring-solution = q:to/END/;
     4
     0,0
