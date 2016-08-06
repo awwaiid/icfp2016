@@ -1,0 +1,16 @@
+#!/usr/bin/env perl6
+
+use lib 'lib';
+use ICFP;
+
+sub MAIN(Str $output-filename) {
+  my $problem-raw = $*IN.slurp-rest;
+  my $problem = Problem::Grammar.parse-problem($problem-raw);
+
+  my $image = Imager.new(xsize => 1000, ysize => 1000);
+  $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+  $problem.draw($image);
+  $image.flip(dir => 'v');
+  $image.write(file => $output-filename);
+}
+
