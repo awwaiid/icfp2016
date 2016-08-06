@@ -3,7 +3,8 @@ use LREP;
 use Inline::Perl5;
 use Imager:from<Perl5>;
 use Data::Dump::Tree;
-use JSON::Tiny;
+# use JSON::Tiny;
+use JSON::Fast;
 
 use Vertex;
 use Polygon;

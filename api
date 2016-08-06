@@ -3,19 +3,39 @@
 use lib 'lib';
 use ICFP;
 
+# say "Started!";
+
 # Get the current status, don't use cache
 # my $status-list = api-call('snapshot/list', :!use-cache);
 my $status-list = api-call('snapshot/list', :use-cache);
 
 # The lastmost one is the one we want
 my $status-hash = $status-list<snapshots>[*-1]<snapshot_hash>;
+# say "Loading contest state";
 my $game-state = get-blob($status-hash);
 
 # Get the list of problems
 my @problem_hashes = $game-state<problems>.list;
 my @problems;
-for @problem_hashes -> $problem_hash {
-  push @problems, get-blob($problem_hash<problem_spec_hash>, :!decode-json);
+my %problem_by_id;
+
+# say "loading problems";
+for @problem_hashes.sort(*<problem_id>) -> $problem_hash {
+  my $problem-spec = get-blob($problem_hash<problem_spec_hash>, :!decode-json);
+  %problem_by_id{$problem_hash<problem_id>} = $problem_hash;
+  %problem_by_id{$problem_hash<problem_id>}<spec> = $problem-spec;
+  push @problems, $problem-spec;
+}
+
+multi MAIN("ls") {
+  say "ID\tsize\tssize\thash";
+  for @problem_hashes -> $problem_hash {
+    say $problem_hash<problem_id problem_size solution_size problem_spec_hash>.join("\t");
+  }
+}
+
+multi MAIN("get-spec", $id) {
+  say %problem_by_id{$id}<spec>;
 }
 
 multi MAIN("hello") {
