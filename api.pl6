@@ -18,40 +18,61 @@ for @problem_hashes -> $problem_hash {
   push @problems, get-blob($problem_hash<problem_spec_hash>, :!decode-json);
 }
 
-my $p = Problem::Grammar.parse-problem(@problems[0]);
+multi MAIN("hello") {
+  my $p = Problem::Grammar.parse-problem(@problems[0]);
+  LREP::here;
+}
 
-# my $boring-solution = q:to/END/;
-#   4
-#   0,0
-#   0,1
-#   1,1
-#   1,0
-#   1
-#   4 0 1 2 3
-#   0,0
-#   0,1
-#   1,1
-#   1,0
-#   END
+multi MAIN("help") {
+  say "hmm...";
+}
 
-# for @problem_hashes -> $problem_hash {
-#   my $id = $problem_hash<problem_id>;
-#   send-solution($id, $boring-solution);
-# }
+multi MAIN("upload-trivial") {
+  my $boring-solution = q:to/END/;
+    4
+    0,0
+    0,1
+    1,1
+    1,0
+    1
+    4 0 1 2 3
+    0,0
+    0,1
+    1,1
+    1,0
+    END
 
-# for @problems.kv -> $index, $problem {
-#     my $p = parse-problem( $problem );
+  for @problem_hashes -> $problem_hash {
+    my $id = $problem_hash<problem_id>;
+    if $id > 1000 {
+      say "Sending $id";
+      send-solution($id, $boring-solution);
+    }
+  }
+}
 
-#     my $image = Imager.new(xsize => 1000, ysize => 1000);
-#     $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
-#     $p.draw($image);
-#     $image.flip(dir => 'v');
-#     $image.write(file => "images/problem_$index.png");
-# }
+multi MAIN("all-images") {
 
-# my $g = Oragami.new;
-# $g.fold( [0,1], [1,0] );
-# say $g.score_for($p);
+  for @problems.kv -> $index, $problem {
+      my $p = Problem::Grammar.parse-problem($problem);
 
-LREP::here;
+      my $image = Imager.new(xsize => 1000, ysize => 1000);
+      $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+      $p.draw($image);
+      $image.flip(dir => 'v');
+      $image.write(file => "images/problem_$index.png");
+  }
+}
+
+multi MAIN("oragami") {
+  my $g = Oragami.new;
+  my $p = $g.facets[0].polygon;
+  $p.split-on( (0, 1/2), (1, 1/2) );
+
+  $g.fold( [0,1], [1,0] );
+  say $g.score_for($p);
+}
+
+
+
 
