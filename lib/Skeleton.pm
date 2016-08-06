@@ -2,9 +2,10 @@
 class Skeleton {
   has @.segments;
 
-  method draw($image) {
+  method draw($image, $xmin, $ymin) {
+    my @segs = @.segments.list;
     for @.segments.list -> $segment {
-      $segment.draw($image);
+      $segment.draw($image, $xmin, $ymin);
     }
   }
 }

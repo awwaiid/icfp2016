@@ -2,6 +2,7 @@
 
 use lib 'lib';
 use ICFP;
+use Data::Dump::Tree;
 
 say "Started!";
 
@@ -71,19 +72,6 @@ multi MAIN("send-all-trivial") {
   }
 }
 
-multi MAIN("all-images") {
-
-  for @problems.kv -> $index, $problem {
-      my $p = Problem::Grammar.parse-problem($problem);
-
-      my $image = Imager.new(xsize => 1000, ysize => 1000);
-      $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
-      $p.draw($image);
-      $image.flip(dir => 'v');
-      $image.write(file => "images/problem_$index.png");
-  }
-}
-
 multi MAIN("oragami") {
   my $g = Oragami.new;
   my $p = $g.facets[0].polygon;
@@ -93,6 +81,15 @@ multi MAIN("oragami") {
   say $g.score_for($p);
 }
 
+multi MAIN("all-images") {
+    for %problem_by_id.kv -> $index, $problem {
+        my $p = Problem::Grammar.parse-problem( $problem<spec> );
 
-
+        my $image = Imager.new(xsize => 1000, ysize => 1000);
+        $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+        $p.draw($image);
+        $image.flip(dir => 'v');
+        $image.write(file => "images/problem_$index.png");
+    }
+}
 

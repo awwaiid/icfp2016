@@ -5,6 +5,7 @@ use Segment;
 use Skeleton;
 use Silhouette;
 use Problem;
+use Data::Dump::Tree;
 
 class Problem::Grammar::Actions {
   method TOP($/) {
@@ -36,7 +37,7 @@ grammar Problem::Grammar {
   method parse-problem($problem) {
     my $a = Problem::Grammar::Actions.new;
     my $m = Problem::Grammar.parse($problem, actions => $a);
-    # say dump $problem unless $m;
+    say dump $problem unless $m;
     die "WHAAA" unless $m;
     $m.made;
   }

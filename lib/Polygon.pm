@@ -64,9 +64,29 @@ class Polygon {
     }
   }
 
-  method draw($image) {
+  method draw($image, $xmin, $ymin) {
     my $color = [(^256).pick, (^256).pick, (^256).pick];
-    my $points = @.vertices.map(*.to-pair);
+    my $unoffset = @.vertices.map(*.to-pair).list;
+    my $points = $unoffset.map(-> ($x, $y) { [ ($x - $xmin) * 500, ($y - $ymin) * 500 ] } ).list;
     $image.polygon(:$points, :$color);
+  }
+
+  method bounding-box() {
+    my @points = @.vertices.map(*.to-pair);
+    my ($xmin, $xmax, $ymin, $ymax);
+    for @points -> ($x, $y) {
+        $xmin = $x if ! $xmin.defined || $x < $xmin;
+        $xmax = $x if ! $xmax.defined || $x > $xmax;
+        $ymin = $y if ! $ymin.defined || $y < $ymin;
+        $ymax = $y if ! $ymax.defined || $y > $ymax;
+    }
+
+    return [$xmin,$ymin,$xmax,$ymax];
+  }
+
+  method bounding-box-min() {
+    my ($xmin, $ymin, $xmax, $ymax) = $.bounding-box();
+    return [$xmin, $ymin];
+
   }
 }
