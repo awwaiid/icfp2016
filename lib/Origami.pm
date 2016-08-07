@@ -87,10 +87,10 @@ class Origami {
 
     # Then the facets
     $result ~= "{@.polygons.elems}\n";
-    for @.polygons -> $polygon {
+    for self.unfolded.polygons -> $polygon {
       $result ~= "{$polygon.vertices.elems}";
       for $polygon.vertices -> $vertex {
-        my $id = %source_to_id{%dest_to_source{ $vertex.to-pair.Str }};
+        my $id = %source_to_id{ $vertex.to-pair.Str };
         $result ~= " $id";
       }
       $result ~= "\n";
