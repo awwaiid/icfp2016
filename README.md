@@ -1,7 +1,6 @@
-# icfp2016
+# icfp2016 - Errol's Robots
 
-
-Hangout: https://hangouts.google.com/hangouts/_/calendar/YXd3YWlpZEBnbWFpbC5jb20.f3u7bahv8iqusrk7jfc2h867bc?authuser=0
+Hangout: https://hangouts.google.com/call/c5cbkndj6vgptcvrhri3vca7qye
 
 http://2016sv.icfpcontest.org/
 Team ID: 31

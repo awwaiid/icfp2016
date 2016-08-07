@@ -3,6 +3,7 @@ use Vertex;
 
 class Polygon {
   has @.vertices;
+  has @.reflection-history;
 
   multi method add-vertex(Vertex $v) {
     @.vertices.push($v);
@@ -107,7 +108,7 @@ class Polygon {
 
     my @polygon-stack;
     my @all-polygons;
-    my $current-polygon = Polygon.new;
+    my $current-polygon = Polygon.new(reflection-history => @.reflection-history);
     @all-polygons.push($current-polygon);
     for self.edges -> ($v1, $v2) {
       # say "Working edge {$v1.to-pair} -> {$v2.to-pair}";
@@ -127,11 +128,13 @@ class Polygon {
           if $intersection.gist eq $v1.to-pair.gist {
             # say "Not adding redundant vertex";
           }
-          $current-polygon.add-vertex(|$intersection) if $intersection.gist ne $v1.to-pair.gist;
+          if $intersection.gist ne $v1.to-pair.gist {
+            $current-polygon.add-vertex(|$intersection);
+          }
           $current-polygon.add-vertex(|$pair-vertex);
           push @polygon-stack, $current-polygon;
           # say "Pushed current: {$current-polygon.gist}";
-          $current-polygon = Polygon.new;
+          $current-polygon = Polygon.new(reflection-history => @.reflection-history);
           @all-polygons.push($current-polygon);
           $current-polygon.add-vertex(|$pair-vertex);
           $current-polygon.add-vertex(|$intersection);
@@ -163,6 +166,7 @@ class Polygon {
     # say "norm $fixed_p2_x, $fixed_p2_y";
 
     for @all-polygons -> $polygon {
+
       # say "Considering flipping {$polygon.gist}";
       for $polygon.vertices -> $v {
         my ($vx, $vy) = $v.to-pair;
@@ -195,12 +199,14 @@ class Polygon {
       my $dist = $x - $mirror-x;
       my $new_x = $x - 2 * $dist;
       my $new_y = $y;
+      # $vertex.move-to($new_x, $new_y);
       @new_vertices.push( Vertex.new(x => $new_x, y => $new_y) );
     }
     @!vertices = @new_vertices;
   }
 
-  method reflect($p1, $p2) {
+  method reflect($p1, $p2, $save_reflection = True) {
+    @.reflection-history.push([$p1, $p2]) if $save_reflection;
     my ($p1_x, $p1_y) = $p1;
     my ($p2_x, $p2_y) = $p2;
     if $p2_x - $p1_x == 0 {
@@ -225,16 +231,33 @@ class Polygon {
       my $d = &d($x, $y, $slope, $intercept);
       my $new_x = 2 * $d - $x;
       my $new_y = 2 * $d * $slope - $y + 2 * $intercept;
+      # $vertex.move-to($new_x, $new_y);
       @new_vertices.push( Vertex.new(x => $new_x, y => $new_y) );
     }
     @!vertices = @new_vertices;
+  }
+
+  method current-xy {
+    @.vertices.map(*.to-pair);
+  }
+
+  method source-xy {
+    my $p = self.clone;
+    for @.reflection-history.reverse -> ($p1, $p2) {
+      $p.reflect($p1, $p2, False);
+    }
+    $p.vertices.map(*.to-pair);
+  }
+
+  method clone {
+    Polygon.new( vertices => @.vertices>>.clone );
   }
 
   method gist {
     "Polygon[ { @.vertices.map(*.to-pair.perl).join("->") } ]";
   }
 
-  method draw($image, $xmin, $ymin, $given_color = False) {
+  method draw($image, $xmin = 0, $ymin = 0, $given_color = False) {
     my $color = $given_color || [(^256).pick, (^256).pick, (^256).pick];
     my $unoffset = @.vertices.map(*.to-pair).list;
     my $points = $unoffset.map(-> ($x, $y) { [ ($x - $xmin) * 1000, ($y - $ymin) * 1000 ] } ).list;

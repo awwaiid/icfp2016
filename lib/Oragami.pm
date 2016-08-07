@@ -10,6 +10,11 @@ class Facet {
     # split into multiple polygons
     # Maybe return two lists, one from the left and one from the right?
   }
+
+  method draw($image) {
+    # say "Drawing {$.polygon.gist}";
+    $.polygon.draw($image);
+  }
 }
 
 class Oragami {
@@ -39,9 +44,19 @@ class Oragami {
     ];
   }
 
-  method fold( $p1, $p2 ) {
+  method fold-all($p1, $p2) {
+    my @new_facets;
+    for @.facets -> $facet {
+      for $facet.polygon.split-on($p1, $p2) -> $polygon {
+        @new_facets.push(Facet.new(polygon => $polygon));
+      }
+    }
+    @.facets = @new_facets;
   }
 
+  method draw($image) {
+    @.facets.map(*.draw($image));
+  }
 
 }
 
