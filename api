@@ -87,8 +87,8 @@ multi MAIN("send-semi-trivial") {
   }
 }
 
-multi MAIN("oragami") {
-  my $g = Oragami.new;
+multi MAIN("origami") {
+  my $g = Origami.new;
   $g.fold-all( (0,0), (1,1) );
 
   my $image = Imager.new(xsize => 1000, ysize => 1000);

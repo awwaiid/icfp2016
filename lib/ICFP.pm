@@ -14,7 +14,7 @@ use Silhouette;
 use Problem;
 use Problem::Grammar;
 use Solution;
-use Oragami;
+use Origami;
 
 sub api-call($path, :$use-cache = True, :$decode-json = True) is export {
   my $filename = "data/{$path.subst(/\//, '_', :g)}";

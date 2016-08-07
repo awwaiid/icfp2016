@@ -17,7 +17,7 @@ class Facet {
   }
 }
 
-class Oragami {
+class Origami {
 
   has @.facets;
 

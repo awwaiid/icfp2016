@@ -1,7 +1,7 @@
 #!/usr/bin/env perl6
 
 use lib 'lib';
-use Oragami;
+use Origami;
 
-say Oragami.new.trivial_solution;
+say Origami.new.trivial_solution;
 
