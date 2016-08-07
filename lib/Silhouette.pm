@@ -19,5 +19,19 @@ class Silhouette {
 
     return [$xmin, $ymin];
   }
+
+  method silhouette-polygon {
+    my $silhouette;
+    for @.polygons -> $p {
+        if ( $silhouette.defined ) {
+            $silhouette = $p.clip_intersection( $silhouette );
+        }
+        else {
+            $silhouette = $p;
+        }
+    }
+
+    return $silhouette;
+  }
 }
 
