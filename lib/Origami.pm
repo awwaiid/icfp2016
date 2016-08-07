@@ -13,24 +13,24 @@ class Origami {
     @.polygons = [
       Polygon.new( vertices => [
         # Simple paper
-        # Vertex.new(x => <0/1>, y => <0/1>),
-        # Vertex.new(x => <1/1>, y => <0/1>),
-        # Vertex.new(x => <1/1>, y => <1/1>),
-        # Vertex.new(x => <0/1>, y => <1/1>),
+        Vertex.new(x => <0/1>, y => <0/1>),
+        Vertex.new(x => <1/1>, y => <0/1>),
+        Vertex.new(x => <1/1>, y => <1/1>),
+        Vertex.new(x => <0/1>, y => <1/1>),
 
         # Crazy spiral
-        Vertex.new(x => <0/5>, y => <0/5>),
-        Vertex.new(x => <0/5>, y => <5/5>),
-        Vertex.new(x => <5/5>, y => <5/5>),
-        Vertex.new(x => <5/5>, y => <4/5>),
-        Vertex.new(x => <1/5>, y => <4/5>),
-        Vertex.new(x => <1/5>, y => <1/5>),
-        Vertex.new(x => <4/5>, y => <1/5>),
-        Vertex.new(x => <4/5>, y => <2/5>),
-        Vertex.new(x => <2/5>, y => <2/5>),
-        Vertex.new(x => <2/5>, y => <3/5>),
-        Vertex.new(x => <5/5>, y => <3/5>),
-        Vertex.new(x => <5/5>, y => <0/5>),
+        # Vertex.new(x => <0/5>, y => <0/5>),
+        # Vertex.new(x => <0/5>, y => <5/5>),
+        # Vertex.new(x => <5/5>, y => <5/5>),
+        # Vertex.new(x => <5/5>, y => <4/5>),
+        # Vertex.new(x => <1/5>, y => <4/5>),
+        # Vertex.new(x => <1/5>, y => <1/5>),
+        # Vertex.new(x => <4/5>, y => <1/5>),
+        # Vertex.new(x => <4/5>, y => <2/5>),
+        # Vertex.new(x => <2/5>, y => <2/5>),
+        # Vertex.new(x => <2/5>, y => <3/5>),
+        # Vertex.new(x => <5/5>, y => <3/5>),
+        # Vertex.new(x => <5/5>, y => <0/5>),
       ])
     ];
   }
