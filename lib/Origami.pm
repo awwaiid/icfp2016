@@ -55,15 +55,15 @@ class Origami {
     my ($x, $y) = $p;
     my $x_str = $x.denominator == 1 ?? $x !! $x.numerator ~ '/' ~ $x.denominator;
     my $y_str = $y.denominator == 1 ?? $y !! $y.numerator ~ '/' ~ $y.denominator;
-    "$x_str $y_str";
+    "$x_str,$y_str";
   }
 
-  multi format_pair(Str $p) {
-    my ($x, $y) = $p;
-    my $x_str = $x.denominator == 1 ?? $x !! $x.numerator ~ '/' ~ $x.denominator;
-    my $y_str = $y.denominator == 1 ?? $y !! $y.numerator ~ '/' ~ $y.denominator;
-    "$x_str $y_str";
-  }
+  # multi format_pair(Str $p) {
+  #   my ($x, $y) = $p;
+  #   my $x_str = $x.denominator == 1 ?? $x !! $x.numerator ~ '/' ~ $x.denominator;
+  #   my $y_str = $y.denominator == 1 ?? $y !! $y.numerator ~ '/' ~ $y.denominator;
+  #   "$x_str $y_str";
+  # }
 
   method generate-solution {
     my $source = @.polygons>>.source-xy>>.Array.flat.Array;
@@ -111,7 +111,7 @@ class Origami {
   }
 
   method draw-file($filename) {
-    my $image = Imager.new(xsize => 1000, ysize => 1000);
+    my $image = Imager.new(xsize => 1000, ysize => 1000, channels => 4);
     $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
     self.draw($image);
     $image.flip(dir => 'v');

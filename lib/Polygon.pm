@@ -16,6 +16,7 @@ class Polygon {
 
   multi method add-vertex($x, $y) {
     my $v = Vertex.new(:$x, :$y);
+    # my $v = Vertex.new(x => $x.Rat, y => $y.Rat);
     if @.vertices[0] && @.vertices[0].to-pair.gist eq $v.to-pair.gist {
       # HACK to avoid looping. Skip.
       # say "Not adding duplicate!";
@@ -196,12 +197,12 @@ class Polygon {
     my $fixed_p2_x = $p2_x - $p1_x;
     my $fixed_p2_y = $p2_y - $p1_y;
 
-    # say "base $p1_x, $p1_y";
-    # say "norm $fixed_p2_x, $fixed_p2_y";
+    say "base $p1_x, $p1_y -> $p2_x, $p2_y";
+    say "norm $fixed_p2_x, $fixed_p2_y";
 
     for @all-polygons -> $polygon {
 
-      # say "Considering flipping {$polygon.gist}";
+      say "Considering flipping {$polygon.gist}";
       for $polygon.vertices -> $v {
         my ($vx, $vy) = $v.to-pair;
         # Normalize to new origin
@@ -210,15 +211,18 @@ class Polygon {
         next if $vx == 0 && $vy == 0;
         my $angle = (atan2($vy, $vx) - atan2($fixed_p2_y, $fixed_p2_x)) % tau;
         if $angle > 0 {
-          # say "$angle ($vx, $vy): {$polygon.gist}";
+          say "$angle ($vx, $vy): {$polygon.gist}";
           if $angle < tau/2 {
-            # say "LEFT. Let's reflect.";
+            say "LEFT. Let's reflect.";
             $polygon.reflect($p1, $p2);
-            # say "New polygon: {$polygon.gist}";
+            say "New polygon: {$polygon.gist}";
+            last;
+          } elsif $angle > tau/2 {
+            say "RIGHT";
+            last;
           } else {
-            # say "RIGHT";
+            say "Abiguous!";
           }
-          last;
         }
       }
     }
@@ -241,8 +245,22 @@ class Polygon {
 
   method reflect($p1, $p2, $save_reflection = True) {
     @.reflection-history.push([$p1, $p2]) if $save_reflection;
+
+    my $tmp_p = self.mgp-polygon;
+    my $tmp_p_mirrored = $tmp_p.mirror($[$p1, $p2]);
+    my $result = $tmp_p_mirrored.points;
+
+    my $p = Polygon.new;
+    for $result.flat -> $point {
+      $p.add-vertex(|$point>>.Rat);
+    }
+    @.vertices = $p.vertices;
+    return;
+
     my ($p1_x, $p1_y) = $p1;
     my ($p2_x, $p2_y) = $p2;
+
+
     if $p2_x - $p1_x == 0 {
       return self.mirror($p1_x);
     }
@@ -266,6 +284,7 @@ class Polygon {
       my $new_x = 2 * $d - $x;
       my $new_y = 2 * $d * $slope - $y + 2 * $intercept;
       # $vertex.move-to($new_x, $new_y);
+      # @new_vertices.push( Vertex.new(x => $new_x.Rat, y => $new_y.Rat) );
       @new_vertices.push( Vertex.new(x => $new_x, y => $new_y) );
     }
     @!vertices = @new_vertices;
@@ -300,10 +319,11 @@ class Polygon {
   }
 
   method draw($image, $xmin = 0, $ymin = 0, $given_color = False) {
-    my $color = $given_color || [(^256).pick, (^256).pick, (^256).pick];
+    my $color = $given_color || [(^256).pick, (^256).pick, (^256).pick, 100];
     my $unoffset = @.vertices.map(*.to-pair).list;
     my $points = $unoffset.map(-> ($x, $y) { [ ($x - $xmin) * 1000, ($y - $ymin) * 1000 ] } ).list;
-    $image.polygon(:$points, :$color);
+    # $image.polygon(:$points, :$color);
+    $image.polygon(:$points, fill => { solid => $color, combine => 'normal' });
   }
 
   method bounding-box() {
