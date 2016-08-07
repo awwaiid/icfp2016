@@ -1,7 +1,7 @@
 
 class Vertex {
-  has $.x;
-  has $.y;
+  has Rat $.x;
+  has Rat $.y;
 
   has @.history;
 

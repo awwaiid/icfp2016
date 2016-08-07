@@ -109,13 +109,10 @@ multi MAIN("origami") {
   #   $polygon.draw($image, 0, 0);
   # }
 
-  $image.flip(dir => 'v');
-  $image.write(file => "out.png");
-  $image.flip(dir => 'v');
+  # say $g.score_for($p);
 
   LREP::here;
 
-  # say $g.score_for($p);
 }
 
 multi MAIN("all-images") {

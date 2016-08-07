@@ -1,61 +1,57 @@
 
 use Polygon;
 use Vertex;
-
-class Facet {
-  has $.polygon;
-  has @.transforms;
-
-  method split-on($p1, $p2) {
-    # split into multiple polygons
-    # Maybe return two lists, one from the left and one from the right?
-  }
-
-  method draw($image) {
-    # say "Drawing {$.polygon.gist}";
-    $.polygon.draw($image);
-  }
-}
+use Imager:from<Perl5>;
 
 class Origami {
 
-  has @.facets;
+  has @.polygons;
 
   method BUILD {
-    @.facets = [
-      Facet.new( polygon => Polygon.new( vertices => [
-        # Vertex.new(:0x, :0y),
-        # Vertex.new(:1x, :0y),
-        # Vertex.new(:1x, :1y),
-        # Vertex.new(:0x, :1y),
-        Vertex.new(x => <0/5>, y => <0/5>),
-        Vertex.new(x => <0/5>, y => <5/5>),
-        Vertex.new(x => <5/5>, y => <5/5>),
-        Vertex.new(x => <5/5>, y => <4/5>),
-        Vertex.new(x => <1/5>, y => <4/5>),
-        Vertex.new(x => <1/5>, y => <1/5>),
-        Vertex.new(x => <4/5>, y => <1/5>),
-        Vertex.new(x => <4/5>, y => <2/5>),
-        Vertex.new(x => <2/5>, y => <2/5>),
-        Vertex.new(x => <2/5>, y => <3/5>),
-        Vertex.new(x => <5/5>, y => <3/5>),
-        Vertex.new(x => <5/5>, y => <0/5>),
-      ]))
+
+    # By default we just one one plain piece of square paper
+    @.polygons = [
+      Polygon.new( vertices => [
+        Vertex.new(x => <0/1>, y => <0/1>),
+        Vertex.new(x => <1/1>, y => <0/1>),
+        Vertex.new(x => <1/1>, y => <1/1>),
+        Vertex.new(x => <0/1>, y => <1/1>),
+        # Vertex.new(x => <0/5>, y => <0/5>),
+        # Vertex.new(x => <0/5>, y => <5/5>),
+        # Vertex.new(x => <5/5>, y => <5/5>),
+        # Vertex.new(x => <5/5>, y => <4/5>),
+        # Vertex.new(x => <1/5>, y => <4/5>),
+        # Vertex.new(x => <1/5>, y => <1/5>),
+        # Vertex.new(x => <4/5>, y => <1/5>),
+        # Vertex.new(x => <4/5>, y => <2/5>),
+        # Vertex.new(x => <2/5>, y => <2/5>),
+        # Vertex.new(x => <2/5>, y => <3/5>),
+        # Vertex.new(x => <5/5>, y => <3/5>),
+        # Vertex.new(x => <5/5>, y => <0/5>),
+      ])
     ];
   }
 
   method fold-all($p1, $p2) {
-    my @new_facets;
-    for @.facets -> $facet {
-      for $facet.polygon.split-on($p1, $p2) -> $polygon {
-        @new_facets.push(Facet.new(polygon => $polygon));
+    my @new_polygons;
+    for @.polygons -> $polygon {
+      for $polygon.split-on($p1, $p2) -> $new_polygon {
+        @new_polygons.push($new_polygon);
       }
     }
-    @.facets = @new_facets;
+    @.polygons = @new_polygons;
   }
 
   method draw($image) {
-    @.facets.map(*.draw($image));
+    @.polygons.map(*.draw($image));
+  }
+
+  method draw-file($filename) {
+    my $image = Imager.new(xsize => 1000, ysize => 1000);
+    $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+    self.draw($image);
+    $image.flip(dir => 'v');
+    $image.write(file => $filename);
   }
 
 }
