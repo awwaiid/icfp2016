@@ -13,24 +13,24 @@ class Origami {
     @.polygons = [
       Polygon.new( vertices => [
         # Simple paper
-        # Vertex.new(x => <0/1>, y => <0/1>),
-        # Vertex.new(x => <1/1>, y => <0/1>),
-        # Vertex.new(x => <1/1>, y => <1/1>),
-        # Vertex.new(x => <0/1>, y => <1/1>),
+        Vertex.new(x => <0/1>, y => <0/1>),
+        Vertex.new(x => <1/1>, y => <0/1>),
+        Vertex.new(x => <1/1>, y => <1/1>),
+        Vertex.new(x => <0/1>, y => <1/1>),
 
         # Crazy spiral
-        Vertex.new(x => <0/5>, y => <0/5>),
-        Vertex.new(x => <0/5>, y => <5/5>),
-        Vertex.new(x => <5/5>, y => <5/5>),
-        Vertex.new(x => <5/5>, y => <4/5>),
-        Vertex.new(x => <1/5>, y => <4/5>),
-        Vertex.new(x => <1/5>, y => <1/5>),
-        Vertex.new(x => <4/5>, y => <1/5>),
-        Vertex.new(x => <4/5>, y => <2/5>),
-        Vertex.new(x => <2/5>, y => <2/5>),
-        Vertex.new(x => <2/5>, y => <3/5>),
-        Vertex.new(x => <5/5>, y => <3/5>),
-        Vertex.new(x => <5/5>, y => <0/5>),
+        # Vertex.new(x => <0/5>, y => <0/5>),
+        # Vertex.new(x => <0/5>, y => <5/5>),
+        # Vertex.new(x => <5/5>, y => <5/5>),
+        # Vertex.new(x => <5/5>, y => <4/5>),
+        # Vertex.new(x => <1/5>, y => <4/5>),
+        # Vertex.new(x => <1/5>, y => <1/5>),
+        # Vertex.new(x => <4/5>, y => <1/5>),
+        # Vertex.new(x => <4/5>, y => <2/5>),
+        # Vertex.new(x => <2/5>, y => <2/5>),
+        # Vertex.new(x => <2/5>, y => <3/5>),
+        # Vertex.new(x => <5/5>, y => <3/5>),
+        # Vertex.new(x => <5/5>, y => <0/5>),
       ])
     ];
   }
@@ -51,28 +51,57 @@ class Origami {
     return $undone;
   }
 
+  multi format_pair(Array $p) {
+    my ($x, $y) = $p;
+    my $x_str = $x.denominator == 1 ?? $x !! $x.numerator ~ '/' ~ $x.denominator;
+    my $y_str = $y.denominator == 1 ?? $y !! $y.numerator ~ '/' ~ $y.denominator;
+    "$x_str $y_str";
+  }
+
+  multi format_pair(Str $p) {
+    my ($x, $y) = $p;
+    my $x_str = $x.denominator == 1 ?? $x !! $x.numerator ~ '/' ~ $x.denominator;
+    my $y_str = $y.denominator == 1 ?? $y !! $y.numerator ~ '/' ~ $y.denominator;
+    "$x_str $y_str";
+  }
+
   method generate-solution {
     my $source = @.polygons>>.source-xy>>.Array.flat.Array;
     my $dest = @.polygons>>.current-xy>>.Array.flat.Array;
-    my %m = ($source.list Z $dest.list).flat.hash;
-    my %v_id = %m.keys.sort.kv.reverse.hash;
+    my %source_to_dest = ($source.list Z $dest.list).flat.hash;
+    my %dest_to_source = ($dest.list Z $source.list).flat.hash;
+
+    # my %source_to_id = %source_to_dest.keys.sort.kv.reverse.hash;
+    # my %id_to_source = %source_to_id.invert;
+
+    my %id_to_source = $source.unique(:as(*.gist)).kv.hash;
+    my %source_to_id = %id_to_source.antipairs.hash;
+
     my $result = "";
-    $result ~= "{%v_id.elems}\n";
-    for %v_id.keys.sort -> $xy {
-      $result ~= "{$xy}\n";
+
+    # First the unique vertexes
+    $result ~= "{%source_to_id.elems}\n";
+    for %id_to_source.keys.sort -> $id {
+      $result ~= format_pair(%id_to_source{$id}) ~ "\n";
     }
+
+    # Then the facets
     $result ~= "{@.polygons.elems}\n";
-    LREP::here;
-    for @.polygons -> $polygon {
+    for self.unfolded.polygons -> $polygon {
       $result ~= "{$polygon.vertices.elems}";
       for $polygon.vertices -> $vertex {
-        my $id = %v_id{ $vertex.to-pair.Str };
+        my $id = %source_to_id{ $vertex.to-pair.Str };
         $result ~= " $id";
       }
       $result ~= "\n";
     }
-    for ^%v_id.elems -> $id {
-      $result ~= "d $id {%m{%v_id.reverse{$id}}}\n";
+
+    # Finally the destination of the vertices
+    # LREP::here;
+        # my $x_str = $x.denominator == 1 ?? $x !! $x.numerator ~ '/' ~ $x.denominator;
+        # my $y_str = $y.denominator == 1 ?? $y !! $y.numerator ~ '/' ~ $y.denominator;
+    for ^%id_to_source.keys.sort -> $id {
+      $result ~= format_pair(%source_to_dest{%id_to_source{$id}}) ~ "\n";
     }
     $result;
   }

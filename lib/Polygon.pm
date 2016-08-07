@@ -6,12 +6,22 @@ class Polygon {
   has @.reflection-history;
 
   multi method add-vertex(Vertex $v) {
-    @.vertices.push($v);
+    if @.vertices[0] && @.vertices[0].to-pair.gist eq $v.to-pair.gist {
+      # HACK to avoid looping. Skip.
+      # say "Not adding duplicate!";
+    } else {
+      @.vertices.push($v);
+    }
   }
 
   multi method add-vertex($x, $y) {
     my $v = Vertex.new(:$x, :$y);
-    @.vertices.push($v);
+    if @.vertices[0] && @.vertices[0].to-pair.gist eq $v.to-pair.gist {
+      # HACK to avoid looping. Skip.
+      # say "Not adding duplicate!";
+    } else {
+      @.vertices.push($v);
+    }
   }
 
   sub determinant($x1,$y1,$x2,$y2) {

@@ -89,7 +89,7 @@ multi MAIN("send-semi-trivial") {
 
 multi MAIN("origami") {
   my $g = Origami.new;
-  # $g.fold-all( (0,0), (1,1) );
+  $g.fold-all( (0,0), (1,1) );
   # $g.fold-all( (0,0.5), (1,0.5) );
   # $g.fold-all( (1, <1/9>), (0.5, 0) );
   # $g.fold-all( (0,1), (1,0) );
@@ -98,7 +98,7 @@ multi MAIN("origami") {
 
   # say $g.score_for($p);
 
-  $g.fold-all( (0, 0), (1, 1) );
+  # $g.fold-all( (0, 0), (1, 1) );
   say $g.generate-solution;
 
   LREP::here;
