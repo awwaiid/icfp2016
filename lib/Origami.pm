@@ -12,22 +12,25 @@ class Origami {
     # By default we just one one plain piece of square paper
     @.polygons = [
       Polygon.new( vertices => [
-        Vertex.new(x => <0/1>, y => <0/1>),
-        Vertex.new(x => <1/1>, y => <0/1>),
-        Vertex.new(x => <1/1>, y => <1/1>),
-        Vertex.new(x => <0/1>, y => <1/1>),
-        # Vertex.new(x => <0/5>, y => <0/5>),
-        # Vertex.new(x => <0/5>, y => <5/5>),
-        # Vertex.new(x => <5/5>, y => <5/5>),
-        # Vertex.new(x => <5/5>, y => <4/5>),
-        # Vertex.new(x => <1/5>, y => <4/5>),
-        # Vertex.new(x => <1/5>, y => <1/5>),
-        # Vertex.new(x => <4/5>, y => <1/5>),
-        # Vertex.new(x => <4/5>, y => <2/5>),
-        # Vertex.new(x => <2/5>, y => <2/5>),
-        # Vertex.new(x => <2/5>, y => <3/5>),
-        # Vertex.new(x => <5/5>, y => <3/5>),
-        # Vertex.new(x => <5/5>, y => <0/5>),
+        # Simple paper
+        # Vertex.new(x => <0/1>, y => <0/1>),
+        # Vertex.new(x => <1/1>, y => <0/1>),
+        # Vertex.new(x => <1/1>, y => <1/1>),
+        # Vertex.new(x => <0/1>, y => <1/1>),
+
+        # Crazy spiral
+        Vertex.new(x => <0/5>, y => <0/5>),
+        Vertex.new(x => <0/5>, y => <5/5>),
+        Vertex.new(x => <5/5>, y => <5/5>),
+        Vertex.new(x => <5/5>, y => <4/5>),
+        Vertex.new(x => <1/5>, y => <4/5>),
+        Vertex.new(x => <1/5>, y => <1/5>),
+        Vertex.new(x => <4/5>, y => <1/5>),
+        Vertex.new(x => <4/5>, y => <2/5>),
+        Vertex.new(x => <2/5>, y => <2/5>),
+        Vertex.new(x => <2/5>, y => <3/5>),
+        Vertex.new(x => <5/5>, y => <3/5>),
+        Vertex.new(x => <5/5>, y => <0/5>),
       ])
     ];
   }
@@ -40,6 +43,12 @@ class Origami {
       }
     }
     @.polygons = @new_polygons;
+  }
+
+  method unfolded {
+    my $undone = Origami.new;
+    $undone.polygons = @.polygons>>.unfolded;
+    return $undone;
   }
 
   method draw($image) {

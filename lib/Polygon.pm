@@ -97,14 +97,32 @@ class Polygon {
     }
 
     @intersections .= sort({ $^a[0] <=> $^b[0] || $^a[1] <=> $^b[1]});
-    @intersections .= squish(:as(*.perl));
-    # say "Intersections: {@intersections.perl}";
+    @intersections .= squish(:as(*.gist));
+    # say "Intersections: {@intersections.gist}";
 
     my %pairs;
     for @intersections.rotor(2) -> ($a, $b) {
-      %pairs{$a.perl} = $b;
-      %pairs{$b.perl} = $a;
+      %pairs{$a.gist} = $b;
+      %pairs{$b.gist} = $a;
     }
+
+    # Ignore intersections that are part of a fold on an edge
+    my $ignore = set();
+    for self.edges -> ($v1, $v2) {
+      # say "Looking for {$v1.to-pair.gist} -> {$v2.to-pair.gist}";
+      if %pairs{$v1.to-pair.gist}:exists && %pairs{$v1.to-pair.gist}.gist eq $v2.to-pair.gist {
+        %pairs{$v1.to-pair.gist}:delete;
+        %pairs{$v2.to-pair.gist}:delete;
+        $ignore (|)= $v1.to-pair.gist;
+        $ignore (|)= $v2.to-pair.gist;
+      } else {
+        # say "Didn't find it.";
+      }
+    }
+
+    # say "Pairs: {%pairs.gist}";
+    # say "Ignore: {$ignore.gist}";
+
 
     my @polygon-stack;
     my @all-polygons;
@@ -116,14 +134,20 @@ class Polygon {
       $current-polygon.add-vertex($v1);
       # say "Added edge to current: {$current-polygon.gist}";
       # See if $p1->$p2 intercepts $v1, $v2
+      # my $i2 = segment-line-intersection( $v2.to-pair, $v1.to-pair, $p1, $p2 );
       my $intersection = segment-line-intersection( $v1.to-pair, $v2.to-pair, $p1, $p2 );
-      if $intersection && $intersection.gist ne $v2.to-pair.gist {
+      if $intersection && $intersection.gist ne $v2.to-pair.gist && $intersection.gist !(elem) $ignore {
         # say "Found intersection at $intersection";
-        my $pair-vertex = %pairs{$intersection.perl};
+        my $pair-vertex = %pairs{$intersection.gist};
+
+        # if $pair-vertex and $intersection are on the fold
+        #    and they are end-points
+        #    then ignore them
+
         if $pair-vertex {
           # say "We haven't started this one yet";
-          %pairs{$intersection.perl}:delete;
-          %pairs{$pair-vertex.perl}:delete;
+          %pairs{$intersection.gist}:delete;
+          %pairs{$pair-vertex.gist}:delete;
           # say "i: {$intersection.gist} v1: {$v1.to-pair.gist}";
           if $intersection.gist eq $v1.to-pair.gist {
             # say "Not adding redundant vertex";
@@ -249,12 +273,20 @@ class Polygon {
     $p.vertices.map(*.to-pair);
   }
 
+  method unfolded {
+    my $p = self.clone;
+    for @.reflection-history.reverse -> ($p1, $p2) {
+      $p.reflect($p1, $p2, False);
+    }
+    return $p;
+  }
+
   method clone {
     Polygon.new( vertices => @.vertices>>.clone );
   }
 
   method gist {
-    "Polygon[ { @.vertices.map(*.to-pair.perl).join("->") } ]";
+    "Polygon[ { @.vertices.map(*.to-pair.gist).join("->") } ]";
   }
 
   method draw($image, $xmin = 0, $ymin = 0, $given_color = False) {

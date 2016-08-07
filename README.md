@@ -22,3 +22,4 @@ API Key: 31-99e01d42cda065257f188de236e944ef
 * [X] Submit hand-made solutions
 * [X] Submit hand-made problems
 
+* Debug $g.fold-all( (0,0), (1,0) ) adding flat polygon
