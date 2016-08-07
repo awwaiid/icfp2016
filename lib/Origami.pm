@@ -118,5 +118,27 @@ class Origami {
     $image.write(file => $filename);
   }
 
+  method resemblance( $pl ) {
+    my $silhouette;
+    for @.polygons -> $p {
+        if ( $silhouette.defined ) {
+            $silhouette = $p.clip_intersection( $silhouette );
+        }
+        else {
+            $silhouette = $p;
+        }
+    }
+
+    my $inter = $silhouette.clip_intersection( $pl );
+    my $inter_area = $inter.area();
+
+    my $union = $silhouette.clip_union( $pl );
+    my $union_area = $union.area();
+
+    my $resem = $inter_area / $union_area;
+
+    return $resem;
+  }
+
 }
 

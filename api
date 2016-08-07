@@ -75,8 +75,9 @@ multi MAIN("send-all-trivial") {
 multi MAIN("send-semi-trivial") {
   my $count = 1;
   for @problem_hashes.sort(*<problem_id> <=> *<problem_id>) -> $problem_hash {
-    $count++;
     my $id = $problem_hash<problem_id>;
+next unless $id > 6258;
+    $count++;
     my $solution = shifted-solution( $problem_hash<spec> );
     say "Sending $id";
     send-solution($id, $solution);
@@ -125,6 +126,19 @@ multi MAIN("polygons") {
   LREP::here;
 }
 
+multi MAIN("resemblance_test") {
+  my $o = Origami.new;
+
+  my $pl = Polygon.new;
+  $pl.add-vertex(0.5,0.5);
+  $pl.add-vertex(1.5,0.5);
+  $pl.add-vertex(1.5,1.5);
+  $pl.add-vertex(0.5,1.5);
+
+  my $res = $o.resemblance( $pl );
+  say "resemblance is $res";
+#  LREP::here;
+}
 
 multi MAIN("all-images") {
     for %problem_by_id.kv -> $index, $problem {
