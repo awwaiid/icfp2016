@@ -4906,3 +4906,169 @@ Sending 5967
 {"solution_size":107,"ok":true,"resemblance":0.563232,"problem_id":5967,"solution_spec_hash":"cce33165329034ff85e2e722f26688c2b0f71474"}
 Sending 5968
 {"solution_size":165,"ok":true,"resemblance":0.498486,"problem_id":5968,"solution_spec_hash":"ba64601976cbf39bb3d503dec9cfabc60a90b0f1"}
+Started!
+Loading contest state b606529f37d3c521b2b229603906ef787964bb88
+Loading problems
+Sending 5970
+{"solution_size":73,"ok":true,"resemblance":0.198609,"problem_id":5970,"solution_spec_hash":"04b5b8e0b277346992a228eed4d9a0dac394e7db"}
+Sending 5974
+{"solution_size":59,"ok":true,"resemblance":0.357142,"problem_id":5974,"solution_spec_hash":"18b70bdc70bed5d6903176131d71845720d08769"}
+Sending 5977
+{"solution_size":183,"ok":true,"resemblance":0.229679,"problem_id":5977,"solution_spec_hash":"ae7e91734a496525d9e7b5e25b66615c91c52ff6"}
+Sending 5978
+{"solution_size":51,"ok":true,"resemblance":0.101562,"problem_id":5978,"solution_spec_hash":"e7c2c021068399c11fc2fb83ce661ed2cc4c2628"}
+Sending 5979
+{"solution_size":113,"ok":true,"resemblance":0.49421,"problem_id":5979,"solution_spec_hash":"335e90a0b14eddd56b6923bd877a16f1b9f2af5b"}
+Sending 5982
+{"solution_size":85,"ok":true,"resemblance":0.090019,"problem_id":5982,"solution_spec_hash":"c1e71f2e6e3507534254a6911cf4e65585be4083"}
+Sending 5983
+{"solution_size":85,"ok":true,"resemblance":0.090019,"problem_id":5983,"solution_spec_hash":"c1e71f2e6e3507534254a6911cf4e65585be4083"}
+Sending 5984
+{"solution_size":77,"ok":true,"resemblance":0.1006,"problem_id":5984,"solution_spec_hash":"50f9ab6c403063d925823a52e138623b7e303389"}
+Sending 5985
+{"solution_size":31,"ok":true,"resemblance":0.222222,"problem_id":5985,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 5986
+{"solution_size":39,"ok":true,"resemblance":0.263888,"problem_id":5986,"solution_spec_hash":"ed6e3633b7c9b6df2b3cfffdabe02a72a0f5a14d"}
+Sending 5987
+{"solution_size":31,"ok":true,"resemblance":0.006155,"problem_id":5987,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 5988
+{"solution_size":31,"ok":true,"resemblance":0.006155,"problem_id":5988,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 5989
+{"solution_size":143,"ok":true,"resemblance":0.50042,"problem_id":5989,"solution_spec_hash":"74b0d289bb1a5e2a90cc87417276eb33ca40db3d"}
+Sending 5990
+{"solution_size":31,"ok":true,"resemblance":0.006155,"problem_id":5990,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 5992
+{"solution_size":47,"ok":true,"resemblance":0.0625,"problem_id":5992,"solution_spec_hash":"9f7ac6851ee02f87f57ed6513f317e45bf6bf861"}
+Sending 5996
+{"solution_size":47,"ok":true,"resemblance":0.125,"problem_id":5996,"solution_spec_hash":"131b8689a09e25a6536775fbd2be3fcaa74ced87"}
+Sending 5999
+{"solution_size":215,"ok":true,"resemblance":0.168327,"problem_id":5999,"solution_spec_hash":"4761e919e840a976bae9c85c564c14c54722f785"}
+Sending 6001
+{"solution_size":101,"ok":true,"resemblance":0.030297,"problem_id":6001,"solution_spec_hash":"c8b0f850fbf5c45683e9105ffcd14f0257ac06e7"}
+Sending 6002
+{"solution_size":153,"ok":true,"resemblance":0.190506,"problem_id":6002,"solution_spec_hash":"8d478b84be6d3c206f290fbc4fff09eefeb0daf2"}
+Sending 6003
+{"solution_size":153,"ok":true,"resemblance":0.190506,"problem_id":6003,"solution_spec_hash":"8d478b84be6d3c206f290fbc4fff09eefeb0daf2"}
+Sending 6004
+{"solution_size":153,"ok":true,"resemblance":0.190506,"problem_id":6004,"solution_spec_hash":"8d478b84be6d3c206f290fbc4fff09eefeb0daf2"}
+Sending 6011
+{"solution_size":75,"ok":true,"resemblance":0.022985,"problem_id":6011,"solution_spec_hash":"786bd3ec83a2275273a1499dbb20b7f4f972ce6d"}
+Sending 6012
+{"solution_size":59,"ok":true,"resemblance":0.241319,"problem_id":6012,"solution_spec_hash":"a4c85bcd18bf4ab11439758c9367cc090c1c982c"}
+Sending 6022
+{"solution_size":63,"ok":true,"resemblance":0.166666,"problem_id":6022,"solution_spec_hash":"f06b0ce3243ec83425277cd7ca3b499264b20099"}
+Sending 6023
+{"solution_size":57,"ok":true,"resemblance":0.166666,"problem_id":6023,"solution_spec_hash":"50b9d3f15e9967559f9bcf9b1deea5a3b12c4ecc"}
+Sending 6025
+{"solution_size":61,"ok":true,"resemblance":0.166666,"problem_id":6025,"solution_spec_hash":"a1ef64faa99d7930c70cc780b0af3dd7c930d647"}
+Sending 6030
+{"solution_size":31,"ok":true,"resemblance":0.5,"problem_id":6030,"solution_spec_hash":"47c110afddeac937ca91798473b4495c63fdea7f"}
+Sending 6031
+{"solution_size":79,"ok":true,"resemblance":0.0725,"problem_id":6031,"solution_spec_hash":"bb8b28d240eff97def1ec40568688ee1e43e7806"}
+Sending 6032
+{"solution_size":51,"ok":true,"resemblance":0.171526,"problem_id":6032,"solution_spec_hash":"c18547dbbe769fe84a0f25e441ebdc01c7b7e88c"}
+Sending 6033
+{"solution_size":59,"ok":true,"resemblance":0.357142,"problem_id":6033,"solution_spec_hash":"18b70bdc70bed5d6903176131d71845720d08769"}
+Sending 6035
+{"solution_size":47,"ok":true,"resemblance":0.207031,"problem_id":6035,"solution_spec_hash":"67d7ef369b07fa728bd133d3193ebe2cbf0f7bd2"}
+Sending 6036
+{"solution_size":79,"ok":true,"resemblance":0.25,"problem_id":6036,"solution_spec_hash":"fbfaac9c14d9084d2099b00052a83893811ac1b6"}
+Sending 6037
+{"solution_size":57,"ok":true,"resemblance":0.029785,"problem_id":6037,"solution_spec_hash":"07fa027a55d1293cd1135d150e1591a4e1d27014"}
+Sending 6038
+{"solution_size":71,"ok":true,"resemblance":0.152578,"problem_id":6038,"solution_spec_hash":"396b428b4a78497c39fd65d282f25f1f989573e9"}
+Sending 6039
+{"solution_size":31,"ok":true,"resemblance":0.302517,"problem_id":6039,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 6040
+{"solution_size":135,"ok":true,"resemblance":0.03401,"problem_id":6040,"solution_spec_hash":"063f211f95367bd659f61fd26aa7f76f9db0fef2"}
+Sending 6041
+{"solution_size":127,"ok":true,"resemblance":0.031007,"problem_id":6041,"solution_spec_hash":"5d5d28431faa73578bfc409f0bdb2c671933a67b"}
+Sending 6046
+{"solution_size":63,"ok":true,"resemblance":0.021975,"problem_id":6046,"solution_spec_hash":"64fdb442ab529eadabcd10aefaef60e712def967"}
+Sending 6050
+{"solution_size":31,"ok":true,"resemblance":0.431952,"problem_id":6050,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 6052
+{"solution_size":79,"ok":true,"resemblance":0.094114,"problem_id":6052,"solution_spec_hash":"f052c82988627e16474c862f8271831b3dbd96ee"}
+Sending 6056
+{"solution_size":41,"ok":true,"resemblance":0.4,"problem_id":6056,"solution_spec_hash":"0e9316bc72d837edd1ce9c6f63e2a9c321e22eea"}
+Sending 6058
+{"solution_size":59,"ok":true,"resemblance":0.357142,"problem_id":6058,"solution_spec_hash":"18b70bdc70bed5d6903176131d71845720d08769"}
+Sending 6060
+{"solution_size":111,"ok":true,"resemblance":0.27414,"problem_id":6060,"solution_spec_hash":"df3701c30f60576dba60bc2b3377e929bf5f0605"}
+Sending 6061
+{"solution_size":147,"ok":true,"resemblance":0.312014,"problem_id":6061,"solution_spec_hash":"d2e723d09b978dc4955c50a8977caca2562ff0b0"}
+Sending 6066
+{"solution_size":71,"ok":true,"resemblance":0.12,"problem_id":6066,"solution_spec_hash":"e49106e7a6d9995d7217aaa7586ffc7d1ca10ef8"}
+Sending 6067
+{"solution_size":121,"ok":true,"resemblance":0.366957,"problem_id":6067,"solution_spec_hash":"53c013f74af634586ce7b013b8c1a6b478d4068c"}
+Sending 6070
+{"solution_size":73,"ok":true,"resemblance":0.24904,"problem_id":6070,"solution_spec_hash":"e5088c1e8baad34e3a547642e7f337f61e7dcadc"}
+Sending 6072
+{"solution_size":149,"ok":true,"resemblance":0.378225,"problem_id":6072,"solution_spec_hash":"59b8fcdc02e0b9656723fbce72ad725ea2b4cd0a"}
+Sending 6073
+{"solution_size":75,"ok":true,"resemblance":0.25,"problem_id":6073,"solution_spec_hash":"45d8763ec49840a8d9614fe38eb055f9c140488c"}
+Sending 6083
+{"solution_size":113,"ok":true,"resemblance":0.440396,"problem_id":6083,"solution_spec_hash":"7b89a973fcc0e19cf49559bedc8f785a488b5799"}
+Sending 6084
+{"solution_size":59,"ok":true,"resemblance":0.184027,"problem_id":6084,"solution_spec_hash":"ba03664a58503cbed9020ba872b7ccbac7ea839e"}
+Sending 6095
+{"solution_size":41,"ok":true,"resemblance":0.369565,"problem_id":6095,"solution_spec_hash":"5bd3e45fe18ca0e5e110ddac954abd6a171fc094"}
+Sending 6099
+{"solution_size":65,"ok":true,"resemblance":0.34421,"problem_id":6099,"solution_spec_hash":"370f80551cbd65fda90925a33aaa8497cd484863"}
+Sending 6112
+{"solution_size":85,"ok":true,"resemblance":0.347046,"problem_id":6112,"solution_spec_hash":"7f54141c421a9a19e7ea857de9353e76c054353c"}
+Sending 6115
+{"solution_size":79,"ok":true,"resemblance":0.125,"problem_id":6115,"solution_spec_hash":"3dbde6bb0f0eb87e402ae0f05d89e25504fbf620"}
+Sending 6116
+{"solution_size":79,"ok":true,"resemblance":0.364283,"problem_id":6116,"solution_spec_hash":"85bcf59e600f027c20de2be54a07a1e4c55acda3"}
+Sending 6117
+{"solution_size":111,"ok":true,"resemblance":0.101562,"problem_id":6117,"solution_spec_hash":"7c09a38dd7419e929b2e78ddcdadb291d3e55f61"}
+Sending 6118
+{"solution_size":49,"ok":true,"resemblance":0.09375,"problem_id":6118,"solution_spec_hash":"0bf7871cb2d5d16a5c4da9f32897fbf0684869cd"}
+Sending 6119
+{"solution_size":161,"ok":true,"resemblance":0.223548,"problem_id":6119,"solution_spec_hash":"9e03716b40e10bad0abd24a5f1ba6c93295995b6"}
+Sending 6123
+{"solution_size":87,"ok":true,"resemblance":0.015625,"problem_id":6123,"solution_spec_hash":"fa2a852e0a3e7a2352ac374fd05011915d7cfc1a"}
+Sending 6124
+{"solution_size":73,"ok":true,"resemblance":0.24904,"problem_id":6124,"solution_spec_hash":"e5088c1e8baad34e3a547642e7f337f61e7dcadc"}
+Sending 6125
+{"solution_size":221,"ok":true,"resemblance":0.270445,"problem_id":6125,"solution_spec_hash":"bb7b555e8e406e76151d88a14f7a2e981f55f2b5"}
+Sending 6133
+{"solution_size":173,"ok":true,"resemblance":0.262837,"problem_id":6133,"solution_spec_hash":"4d1a2e00cc07f0a7394ea0f28fd0bb337a22f404"}
+Sending 6135
+{"solution_size":127,"ok":true,"resemblance":0.15625,"problem_id":6135,"solution_spec_hash":"17076287e744512fdf124229c30f1a3182dcc214"}
+Started!
+Loading contest state 53c814f5652c8d9f451e7f25b566d25ed754d0cb
+Loading problems
+Sending 6136
+{"solution_size":31,"ok":true,"resemblance":0.473636,"problem_id":6136,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 6138
+{"solution_size":105,"ok":true,"resemblance":0.370356,"problem_id":6138,"solution_spec_hash":"91e19f190e9c73bed7ea9b0e4b7bc36135c3a4b4"}
+Sending 6142
+{"solution_size":67,"ok":true,"resemblance":0.02105,"problem_id":6142,"solution_spec_hash":"9b387a71fae3cb24b817963645133df9c56da41d"}
+Sending 6143
+{"solution_size":55,"ok":true,"resemblance":0.054687,"problem_id":6143,"solution_spec_hash":"25cdac415538dddc3a5bf6a173b810c85a292a84"}
+Sending 6145
+{"solution_size":31,"ok":true,"resemblance":0.637063,"problem_id":6145,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 6146
+{"solution_size":73,"ok":true,"resemblance":0.24904,"problem_id":6146,"solution_spec_hash":"e5088c1e8baad34e3a547642e7f337f61e7dcadc"}
+Sending 6147
+{"solution_size":39,"ok":true,"resemblance":0.28125,"problem_id":6147,"solution_spec_hash":"9bfa348fe4bba8735b203110ede0c5bb1c4b18dd"}
+Sending 6163
+{"solution_size":59,"ok":true,"resemblance":0.127863,"problem_id":6163,"solution_spec_hash":"18b70bdc70bed5d6903176131d71845720d08769"}
+Sending 6165
+{"solution_size":87,"ok":true,"resemblance":0.015625,"problem_id":6165,"solution_spec_hash":"2e3d9b6a36bc59da49876bc8a8a16a591d6c753b"}
+Sending 6168
+{"solution_size":83,"ok":true,"resemblance":0.224518,"problem_id":6168,"solution_spec_hash":"f1e361c8a135fed56ed5adfa9d2eb207a3408982"}
+Sending 6172
+{"solution_size":31,"ok":true,"resemblance":0.11625,"problem_id":6172,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
+Sending 6175
+{"solution_size":373,"ok":true,"resemblance":0.089634,"problem_id":6175,"solution_spec_hash":"6fa738f0a0bf3f1f12f846594984975a2b186456"}
+Sending 6183
+{"solution_size":229,"ok":true,"resemblance":0.317741,"problem_id":6183,"solution_spec_hash":"1eece802d385e746471d8b7a342cdc4334e603e8"}
+Sending 6185
+{"solution_size":269,"ok":true,"resemblance":0.33722,"problem_id":6185,"solution_spec_hash":"b78f61ce19f7b5d38de8a8190fe075b4ffd73ce9"}
+Sending 6186
+{"solution_size":81,"ok":true,"resemblance":0.135416,"problem_id":6186,"solution_spec_hash":"d798b3f228df1a90c37d0bc884b4e7a1f522a5b5"}
+Sending 6187
+{"solution_size":31,"ok":true,"resemblance":1.0,"problem_id":6187,"solution_spec_hash":"d141fbf7b43b4107082cc072a852db13ca920605"}
