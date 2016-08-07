@@ -7,12 +7,18 @@ Team ID: 31
 Password: zXz99ySdzWSn
 API Key: 31-99e01d42cda065257f188de236e944ef
 
-
-TODO:
-* Render solutions and problems
-* Calculate score?
-* Try to take a solution and fold it?
-
-curl --compressed -L -H Expect: -H 'X-API-Key: 31-99e01d42cda065257f188de236e944ef' 'http://2016sv.icfpcontest.org/api/snapshot/list'
-
+## TODO:
+* [X] Render problems
+* [ ] Render solutions
+* [X] Fold polygons (split them)
+* [X] Track polygon source / dest
+* [ ] Calculate overlap from an Origami to a Problem
+* [ ] Output a Solution from an Origami
+* [ ] Simple fold for an Origami
+* [ ] Complex fold for an Origami
+* [ ] Random fold
+* [ ] Random hill climb
+* [ ] Submit trivial solutions
+* [X] Submit hand-made solutions
+* [X] Submit hand-made problems
 
