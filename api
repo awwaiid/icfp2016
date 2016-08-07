@@ -98,9 +98,33 @@ multi MAIN("origami") {
 
   # say $g.score_for($p);
 
+  $g.fold-all( (0, 0), (1, 1) );
+  say $g.generate-solution;
+
   LREP::here;
 
 }
+
+multi MAIN("polygons") {
+  my $p1 = Polygon.new;
+  $p1.add-vertex(0.0,0.0);
+  $p1.add-vertex(1.0,0.0);
+  $p1.add-vertex(1.0,1.0);
+  $p1.add-vertex(0.0,1.0);
+
+  my $p2 = Polygon.new;
+  $p2.add-vertex(0.5,0.5);
+  $p2.add-vertex(1.5,0.5);
+  $p2.add-vertex(1.5,1.5);
+  $p2.add-vertex(0.5,1.5);
+
+  my $p3 = $p1.clip('INTERSECTION', $p2);
+  say "New polygon: #{$p3.gist}";
+  say "Area: #{$p3.area}";
+
+  LREP::here;
+}
+
 
 multi MAIN("all-images") {
     for %problem_by_id.kv -> $index, $problem {

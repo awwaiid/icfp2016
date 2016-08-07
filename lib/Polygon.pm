@@ -314,4 +314,53 @@ class Polygon {
     return [$xmin, $ymin];
 
   }
+
+  use Math::Geometry::Planar:from<Perl5>;
+
+  method mgp-polygon {
+    my $mpg-polygon = Math::Geometry::Planar.new;
+    $mpg-polygon.points( $[ @.vertices>>.to-pair ] );
+    return $mpg-polygon;
+  }
+
+  method area {
+    self.mgp-polygon.area;
+  }
+
+  method clip($type, $other_p) {
+    my $p1 = self.mgp-polygon;
+    my $p2 = $other_p.mgp-polygon;
+
+    my $g1 = $p1.convert2gpc;
+    my $g2 = $p2.convert2gpc;
+
+    my $g_clip = GpcClip($type, $g1, $g2);
+    my $g_result = Gpc2Polygons($g_clip);
+    my $polygons = $g_result.polygons;
+
+    my $result = $polygons[0];
+    my $p = Polygon.new;
+    for $result.flat -> $point {
+      $p.add-vertex(|$point>>.Rat);
+    }
+
+    return $p;
+  }
+
+  method clip_difference($other_p) {
+    self.clip('DIFFERENCE', $other_p);
+  }
+
+  method clip_intersection($other_p) {
+    self.clip('INTERSECTION', $other_p);
+  }
+
+  method clip_XOR($other_p) {
+    self.clip('XOR', $other_p);
+  }
+
+  method clip_union($other_p) {
+    self.clip('UNION', $other_p);
+  }
+
 }

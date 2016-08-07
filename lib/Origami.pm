@@ -51,6 +51,32 @@ class Origami {
     return $undone;
   }
 
+  method generate-solution {
+    my $source = @.polygons>>.source-xy>>.Array.flat.Array;
+    my $dest = @.polygons>>.current-xy>>.Array.flat.Array;
+    my %m = ($source.list Z $dest.list).flat.hash;
+    my %v_id = %m.keys.sort.kv.reverse.hash;
+    my $result = "";
+    $result ~= "{%v_id.elems}\n";
+    for %v_id.keys.sort -> $xy {
+      $result ~= "{$xy}\n";
+    }
+    $result ~= "{@.polygons.elems}\n";
+    LREP::here;
+    for @.polygons -> $polygon {
+      $result ~= "{$polygon.vertices.elems}";
+      for $polygon.vertices -> $vertex {
+        my $id = %v_id{ $vertex.to-pair.Str };
+        $result ~= " $id";
+      }
+      $result ~= "\n";
+    }
+    for ^%v_id.elems -> $id {
+      $result ~= "d $id {%m{%v_id.reverse{$id}}}\n";
+    }
+    $result;
+  }
+
   method draw($image) {
     @.polygons.map(*.draw($image));
   }
