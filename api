@@ -87,12 +87,52 @@ multi MAIN("send-semi-trivial") {
   }
 }
 
+sub dist($a, $b) {
+  my ($x1, $y1) = $a;
+  my ($x2, $y2) = $b;
+  sqrt( ($x2 - $x1)**2 + ($y2 - $y1)**2 );
+}
+
+sub dot($a, $b) {
+  my ($x1, $y1) = $a;
+  my ($x2, $y2) = $b;
+  $x1*$x2 + $y1*$y2;
+}
+
+sub angle($a, $b, $c) {
+  my $b-fixed = ($b[0] - $a[0], $b[1] - $a[1]);
+  my $c-fixed = ($c[0] - $a[0], $c[1] - $a[1]);
+  my $dist1 = dist($a, $b);
+  my $dist2 = dist($a, $c);
+  my $dot1 = dot($b-fixed, $c-fixed);
+  acos( $dot1 / ($dist1 * $dist2) );
+}
+
 multi MAIN("oragami") {
   my $g = Oragami.new;
-  my $p = $g.facets[0].polygon;
-  $p.split-on( (0, <1/2>), (1, <1/2>) );
+  # $p.split-on( (0, <1/2>), (1, <1/2>) );
 
-  $g.fold( [0,1], [1,0] );
+  my $p = $g.facets[0].polygon;
+  my @polygons = $p.split-on( (1, <1/2>), (0, <1/2>) );
+  # my @polygons = $p.split-on( (0, <1/2>), (1, <1/2>) );
+  # my @polygons = $p.split-on( (<1/2>, 0), (<1/2>, 1) );
+  # my @polygons = $p.split-on( (0, 0), (1, 1) );
+  # my @polygons = $p.split-on( (1, 1), (0,0) );
+  my $image = Imager.new(xsize => 1000, ysize => 1000);
+  $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
+  for @polygons -> $polygon {
+    $polygon.draw($image, 0, 0);
+  }
+  $image.flip(dir => 'v');
+  $image.write(file => "out.png");
+  $image.flip(dir => 'v');
+
+  # (atan2(|$z-fixed) - atan2(|$b-fixed)) % (2*pi)
+
+  LREP::here;
+
+  # $g.fold( [0,1], [1,0] );
+  $g.fold( [0.5,0], [0.5,1] );
   # say $g.score_for($p);
 }
 

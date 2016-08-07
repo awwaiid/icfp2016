@@ -18,24 +18,41 @@ class Polygon {
   }
 
 	sub segment-line-intersection(@p1, @p2, @p3, @p4) {
-    say "Looking for segment {@p1} -> {@p2} intersecting {@p3} -- {@p4}";
+    # say "Looking for segment {@p1} -> {@p2} intersecting {@p3} -- {@p4}";
 		my @p5;
 		my $n1 = determinant((@p3[0]-@p1[0]),(@p3[0]-@p4[0]),(@p3[1]-@p1[1]),(@p3[1]-@p4[1]));
 		my $d  = determinant((@p2[0]-@p1[0]),(@p3[0]-@p4[0]),(@p2[1]-@p1[1]),(@p3[1]-@p4[1]));
-    my $delta = 10 ** -7;
-		if (abs($d) < $delta) {
-      say "Parallel!";
+    # my $delta = 10 ** -7;
+		# if (abs($d) < $delta) {
+		# if $n1/$d == 0 {
+      # return "start";
+    # }
+		# if $n1/$d == 1 {
+      # return "end";
+    # }
+		if $d == 0 { # Maybe we can get away without delta in Rat land
+      # say "Parallel!";
 			return False; # parallel
 		}
-		if (!(($n1/$d < 1) && ($n1/$d > 0))) {
-      say "Nope!";
+		if !(($n1/$d <= 1) && ($n1/$d >= 0)) {
+      # say "Nope!";
 			return False; # not overlapping
 		}
 		@p5[0] = @p1[0] + $n1/$d * (@p2[0] - @p1[0]);
 		@p5[1] = @p1[1] + $n1/$d * (@p2[1] - @p1[1]);
-    say "Yep: {@p5}";
+    # say "Yep: {@p5}";
 		return @p5; # intersection point
 	}
+
+  # sub on-line(@point, @line_p1, @line_p2) {
+  #   my $dxc = @point[0] - @line_p1[0];
+  #   my $dyc = @point[1] - @line_p1[1];
+
+  #   my $dxl = @line_p2[0] - @line_p1[0];
+  #   my $dxl = @line_p2[1] - @line_p1[1];
+
+  #   $dxc * $dyl - $dyc * $dxl == 0;
+  # }
 
   method edges {
     # Slice these out into redundant pairs, looping back to the first
@@ -78,8 +95,9 @@ class Polygon {
       }
     }
 
-    say "Intersections: {@intersections.perl}";
     @intersections .= sort({ $^a[0] <=> $^b[0] || $^a[1] <=> $^b[1]});
+    @intersections .= squish(:as(*.perl));
+    # say "Intersections: {@intersections.perl}";
 
     my %pairs;
     for @intersections.rotor(2) -> ($a, $b) {
@@ -92,41 +110,132 @@ class Polygon {
     my $current-polygon = Polygon.new;
     @all-polygons.push($current-polygon);
     for self.edges -> ($v1, $v2) {
-      say "Working edge $v1 -> $v2";
+      # say "Working edge {$v1.to-pair} -> {$v2.to-pair}";
+      # LREP::here;
       $current-polygon.add-vertex($v1);
+      # say "Added edge to current: {$current-polygon.gist}";
       # See if $p1->$p2 intercepts $v1, $v2
       my $intersection = segment-line-intersection( $v1.to-pair, $v2.to-pair, $p1, $p2 );
-      if $intersection {
+      if $intersection && $intersection.gist ne $v2.to-pair.gist {
+        # say "Found intersection at $intersection";
         my $pair-vertex = %pairs{$intersection.perl};
         if $pair-vertex {
-          # We haven't started this one yet
-          $current-polygon.add-vertex(|$intersection);
+          # say "We haven't started this one yet";
+          %pairs{$intersection.perl}:delete;
+          %pairs{$pair-vertex.perl}:delete;
+          # say "i: {$intersection.gist} v1: {$v1.to-pair.gist}";
+          if $intersection.gist eq $v1.to-pair.gist {
+            # say "Not adding redundant vertex";
+          }
+          $current-polygon.add-vertex(|$intersection) if $intersection.gist ne $v1.to-pair.gist;
           $current-polygon.add-vertex(|$pair-vertex);
           push @polygon-stack, $current-polygon;
+          # say "Pushed current: {$current-polygon.gist}";
           $current-polygon = Polygon.new;
           @all-polygons.push($current-polygon);
-          $current-polygon.add-vertex(|$intersection);
           $current-polygon.add-vertex(|$pair-vertex);
+          $current-polygon.add-vertex(|$intersection);
         } else {
-          # Now we're on the other side. Pop goes the weasle!
-          $current-polygon = @polygon-stack.pop;
+          # say "Now we're on the other side.";
+          # if $intersection.gist eq $v1.to-pair.gist {
+          #   # say "... or are we?";
+          if $intersection.gist eq $v2.to-pair.gist {
+            # say "... or maybe not?";
+          } else {
+            # say "Pop goes the weasle!";
+            $current-polygon = @polygon-stack.pop;
+          }
+        }
+      }
+      # say "current: {$current-polygon.gist}";
+      # say "stack: {@polygon-stack>>.gist}";
+      # say "all: {@all-polygons>>.gist}";
+    }
+
+
+    my ($p1_x, $p1_y) = $p1;
+    my ($p2_x, $p2_y) = $p2;
+
+    my $fixed_p2_x = $p2_x - $p1_x;
+    my $fixed_p2_y = $p2_y - $p1_y;
+
+    # say "base $p1_x, $p1_y";
+    # say "norm $fixed_p2_x, $fixed_p2_y";
+
+    for @all-polygons -> $polygon {
+      # say "Considering flipping {$polygon.gist}";
+      for $polygon.vertices -> $v {
+        my ($vx, $vy) = $v.to-pair;
+        # Normalize to new origin
+        $vx -= $p1_x;
+        $vy -= $p1_y;
+        next if $vx == 0 && $vy == 0;
+        my $angle = (atan2($vy, $vx) - atan2($fixed_p2_y, $fixed_p2_x)) % tau;
+        if $angle > 0 {
+          # say "$angle ($vx, $vy): {$polygon.gist}";
+          if $angle < tau/2 {
+            # say "LEFT. Let's reflect.";
+            $polygon.reflect($p1, $p2);
+            # say "New polygon: {$polygon.gist}";
+          } else {
+            # say "RIGHT";
+          }
+          last;
         }
       }
     }
 
-    my $image = ::('Imager').new(xsize => 1000, ysize => 1000);
-    $image.polyline( points => [ [0,0], [0,999], [999,999], [999,0], [0,0] ], color => 'red');
-    for @all-polygons -> $polygon {
-      $polygon.draw($image, 0, 0);
-    }
-    $image.write(file => "out.png");
-
-    LREP::here;
-
+    @all-polygons;
   }
 
-  method draw($image, $xmin, $ymin) {
-    my $color = [(^256).pick, (^256).pick, (^256).pick];
+  method mirror($mirror-x) {
+    my @new_vertices;
+    for @.vertices -> $vertex {
+      my ($x, $y) = $vertex.to-pair;
+      my $dist = $x - $mirror-x;
+      my $new_x = $x - 2 * $dist;
+      my $new_y = $y;
+      @new_vertices.push( Vertex.new(x => $new_x, y => $new_y) );
+    }
+    @!vertices = @new_vertices;
+  }
+
+  method reflect($p1, $p2) {
+    my ($p1_x, $p1_y) = $p1;
+    my ($p2_x, $p2_y) = $p2;
+    if $p2_x - $p1_x == 0 {
+      return self.mirror($p1_x);
+    }
+    my $slope = ($p2_y - $p1_y) / ($p2_x - $p1_x);
+    my $intercept = $p1_y - $slope * $p1_x;
+    # say $p1_x;
+    # say $p1_y;
+    # say $p2_x;
+    # say $p2_y;
+    # say $slope;
+    # say $intercept;
+    # say "({$p1_x}, {$p1_y}) -> ({$p2_x}, {$p2_y}) slope: {$slope} int: {$intercept}";
+    my &d = -> $x, $y, $slope, $intercept {
+      ($x + $slope * ($y - $intercept)) / (1 + $slope ** 2)
+    };
+
+    my @new_vertices;
+    for @.vertices -> $vertex {
+      my ($x, $y) = $vertex.to-pair;
+      my $d = &d($x, $y, $slope, $intercept);
+      my $new_x = 2 * $d - $x;
+      my $new_y = 2 * $d * $slope - $y + 2 * $intercept;
+      @new_vertices.push( Vertex.new(x => $new_x, y => $new_y) );
+    }
+    @!vertices = @new_vertices;
+  }
+
+  method gist {
+    "Polygon[ { @.vertices.map(*.to-pair.perl).join("->") } ]";
+  }
+
+  method draw($image, $xmin, $ymin, $given_color = False) {
+    my $color = $given_color || [(^256).pick, (^256).pick, (^256).pick];
     my $unoffset = @.vertices.map(*.to-pair).list;
     my $points = $unoffset.map(-> ($x, $y) { [ ($x - $xmin) * 1000, ($y - $ymin) * 1000 ] } ).list;
     $image.polygon(:$points, :$color);
