@@ -4,6 +4,8 @@ use lib 'lib';
 use ICFP;
 use Data::Dump::Tree;
 
+use MONKEY-SEE-NO-EVAL;
+
 say "Started!";
 
 # Get the current status, don't use cache
@@ -12,6 +14,7 @@ my $status-list = api-call('snapshot/list', use-cache => $use-cache);
 
 # The lastmost one is the one we want
 my $status-hash = $status-list<snapshots>[*-1]<snapshot_hash>;
+# my $status-hash = $status-list<snapshots>[10]<snapshot_hash>;
 say "Loading contest state $status-hash";
 my $game-state = get-blob($status-hash);
 
@@ -89,13 +92,40 @@ next unless $id > 6258;
 }
 
 multi MAIN("origami") {
-  my $g = Origami.new;
+  my $origami = Origami.new;
   # $g.fold-all( (0,0), (1,1) );
   # $g.fold-all( (0,0.5), (1,0.5) );
   # $g.fold-all( (1, <1/9>), (0.5, 0) );
   # $g.fold-all( (0,1), (1,0) );
   # $g.fold-all( (0,0), (1,0) );
-  $g.draw-file('out.png');
+
+  $origami.draw-file('out.png');
+  my $problem = Problem::Grammar.parse-problem( %problem_by_id{527}<spec> );
+  my $problem-polygon = $problem.silhouette.silhouette-polygon;
+
+  $problem.draw-file('out.png');
+  say %problem_by_id{527};
+  $*IN.get;
+
+  my $best_score = $origami.resemblance($problem-polygon);
+
+  loop {
+    my $tmp-origami = Origami.new;
+
+    $tmp-origami.fold-all( (rand.Rat, rand.Rat), (rand.Rat, rand.Rat) );
+    $tmp-origami.draw-file('out.png');
+    say "Checking against {$problem-polygon}";
+    my $current = $tmp-origami.resemblance($problem-polygon);
+    say "Best: $best_score current: $current";
+    if $best_score < $current {
+      $origami = $tmp-origami;
+      $best_score = $current;
+      say $origami.generate-solution;
+      $*IN.get;
+    }
+
+  }
+
 
   # say $g.score_for($p);
 

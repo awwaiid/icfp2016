@@ -366,7 +366,14 @@ class Polygon {
 
     my $g_clip = GpcClip($type, $g1, $g2);
     my $g_result = Gpc2Polygons($g_clip);
-    my $polygons = $g_result.polygons;
+    my $polygons;
+    if $g_result ~~ Array {
+      return False;
+      # LREP::here;
+      # $polygons = $g_result[0].polygons;
+    } else {
+      $polygons = $g_result.polygons;
+    }
 
     my $result = $polygons[0];
     my $p = Polygon.new;

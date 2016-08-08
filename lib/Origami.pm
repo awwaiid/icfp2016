@@ -122,17 +122,20 @@ class Origami {
     my $silhouette;
     for @.polygons -> $p {
         if ( $silhouette.defined ) {
-            $silhouette = $p.clip_intersection( $silhouette );
+            $silhouette = $p.clip_union( $silhouette );
         }
         else {
             $silhouette = $p;
         }
     }
+    return 0 if ! $silhouette;
 
     my $inter = $silhouette.clip_intersection( $pl );
+    return 0 if ! $inter;
     my $inter_area = $inter.area();
 
     my $union = $silhouette.clip_union( $pl );
+    return 0 if ! $union;
     my $union_area = $union.area();
 
     my $resem = $inter_area / $union_area;
