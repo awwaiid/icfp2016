@@ -311,7 +311,10 @@ class Polygon {
   }
 
   method clone {
-    Polygon.new( vertices => @.vertices>>.clone );
+    Polygon.new(
+      vertices => @.vertices>>.clone,
+      reflection-history => @.reflection-history
+    );
   }
 
   method gist {

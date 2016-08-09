@@ -110,8 +110,7 @@ multi MAIN("origami") {
   my $best_score = $origami.resemblance($problem-polygon);
 
   loop {
-    my $tmp-origami = Origami.new;
-
+    my $tmp-origami = $origami.clone;
     $tmp-origami.fold-all( (rand.Rat, rand.Rat), (rand.Rat, rand.Rat) );
     $tmp-origami.draw-file('out.png');
     say "Checking against {$problem-polygon}";

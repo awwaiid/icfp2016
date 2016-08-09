@@ -1,5 +1,7 @@
 
-sudo apt-get install libperl-dev libimager-perl
+# Perl 5 dependencies
+sudo apt-get install libperl-dev libimager-perl cpanminus
+sudo cpanm Math::Geometry::Planar
 
 # if [[ $(perl -V | grep shrplib) ]] ; then
 #   echo 'Perl with -Duseshrplib found!'

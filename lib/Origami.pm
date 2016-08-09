@@ -118,6 +118,12 @@ class Origami {
     $image.write(file => $filename);
   }
 
+  method clone {
+    my $c = Origami.new;
+    $c.polygons = @.polygons>>.clone;
+    $c;
+  }
+
   method resemblance( $pl ) {
     my $silhouette;
     for @.polygons -> $p {
